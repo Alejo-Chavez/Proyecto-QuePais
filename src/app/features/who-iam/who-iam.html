@@ -1,0 +1,167 @@
+<aside
+  class="hidden lg:flex flex-col fixed left-0 top-16 bottom-0 w-64 py-6 overflow-y-auto border-r border-[var(--ale)]/50 border bg-[var(--ink-black)] text-sm">
+  <!-- Perfil -->
+  <div class="px-6 mb-8 flex flex-col items-center text-center">
+    @if (user()) {
+    <!-- Avatar -->
+    <div class="relative w-24 h-24 mb-4 rounded-full overflow-hidden border-2 border-slate-700">
+      <img class="w-full h-full object-cover"
+        [src]="user()?.avatar_url"
+        alt="User profile">
+    </div>
+
+    <!-- Nombre -->
+    <h3 class="text-base font-semibold ">@{{user()?.login}}</h3>
+    <p class="text-xs text-slate-400 mb-4">{{user()?.bio}}</p>
+
+    <!-- Stats -->
+    <div class="flex w-full gap-2 mb-4 px-2">
+
+      <div class="flex-1 bg-slate-800 border border-slate-700 rounded-lg p-2">
+        <div class="text-xs font-bold ">{{user()?.public_repos}}</div>
+        <div class="text-[10px] text-slate-400">Repos</div>
+      </div>
+
+      <div class="flex-1 bg-slate-800 border border-slate-700 rounded-lg p-2">
+        <div class="text-xs font-bold ">{{user()?.followers}}</div>
+        <div class="text-[10px] text-slate-400">Followers</div>
+      </div>
+    
+    </div>}
+
+    <!-- Sobre mí -->
+    <div class="w-full text-left px-2 mb-6">
+      <h4 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+        Sobre mí
+      </h4>
+
+      <p class="text-xs text-slate-400 leading-relaxed">
+        Desarrollador enfocado en frontend con Angular. Me gusta construir interfaces limpias,
+        optimizadas y escalables.
+      </p>
+    </div>
+
+    <!-- Botón -->
+     <a href="https://github.com/Alejo-Chavez" target="_blank">
+    <button
+      class="w-full py-2 px-4 rounded-lg bg-slate-800 text-blue-400 font-medium border border-slate-700 hover:bg-slate-700 transition-all text-xs">
+      Ver GitHub
+    </button>
+    </a>
+
+  </div>
+
+</aside>
+
+<main class="lg:pl-64 pt-24 pb-16 px-6 max-w-[1200px] mx-auto min-h-[1024px]">
+
+  <section class="lg:hidden px-6 mb-8">
+    <div class="bg-[#161B22] border border-[#30363d] rounded-xl p-6">
+
+      <!-- Perfil -->
+      <div class="flex flex-col md:flex-row items-center gap-4 mb-4">
+        <div class="w-16 h-16 rounded-full overflow-hidden border border-[#30363d]">
+          <img [src]="user()?.avatar_url" alt="Avatar" class="w-full h-full object-cover">
+        </div>
+        <div>
+          <h3 class=" text-center md:text-left  font-semibold ">{{user()?.login}}</h3>
+          <p class="text-slate-400 text-sm m-0.5">
+            {{user()?.bio}}
+          </p>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="flex gap-4 mb-4">
+        <div class="flex-1 bg-[#0D1117] border border-[#30363d] rounded-lg p-3 text-center">
+          <p class=" font-bold">{{user()?.public_repos}}</p>
+          <p class="text-slate-500 text-xs">Repos</p>
+        </div>
+        <div class="flex-1 bg-[#0D1117] border border-[#30363d] rounded-lg p-3 text-center">
+          <p class=" font-bold">{{user()?.followers}}</p>
+          <p class="text-slate-500 text-xs">Followers</p>
+        </div>
+      </div>
+
+      <!-- Sobre mí -->
+      <div>
+        <h4 class="text-slate-400 text-xs uppercase mb-2">Sobre mí</h4>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          Desarrollador enfocado en frontend con Angular. Me gusta construir interfaces limpias,
+          optimizadas y escalables.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="mb-10">
+    <div class="relative overflow-hidden rounded-xl border border-[var(--ale)] bg-[#161B22] p-6">
+      <div class="flex flex-col gap-4">
+        <!-- Subtitulo y tiutlo-->
+        <div
+          class="inline-flex items-center gap-1 px-3 py-1 rounded-full border border-[var(--primary)]/15 bg-[var(--purssian-blue)]/80 text-[var(--primary)] w-fit">
+          <span class="w-2 h-2 rounded-full bg-primary"></span> Mi juego: ¿Qué País? (En desarrollo)
+        </div>
+        <h1 class="text-5xl ">Proyecto: ¿Qué País?</h1>
+        <!-- Informacion del juego-->
+        <div class="space-y-4 max-w-3xl">
+          <p class="font-body-md text-slate-300"> El juego es un "Adivina la bandera". En cada ronda se muestra una
+            bandera con 4 opciones de países. El usuario
+            elige una y recibe feedback inmediato utilizando un mapa SVG: si acierta, el país se ilumina en verde, si
+            falla, su elección se marca en rojo y la correcta en verde</p>
+          <div class="gap-6 mt-4">
+            <div class="space-y-2">
+              <h4 class=" font-semibold flex items-center gap-2"> <span
+                  class="material-symbols-outlined text-sm">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="11" fill="white" height="11">
+                    <path
+                      d="m14.515.456.965.965a1.555 1.555 0 0 1 0 2.2L9.745 9.355a1.549 1.549 0 0 1-.672.396l-2.89.826a.67.67 0 0 1-.828-.474.66.66 0 0 1 .004-.35l.825-2.89c.073-.254.209-.486.396-.673L12.315.456c.144-.145.316-.259.505-.337a1.538 1.538 0 0 1 1.19 0c.189.078.361.192.505.337Zm-3.322 3.008-3.67 3.669a.214.214 0 0 0-.057.096L6.97 8.965l1.736-.496a.218.218 0 0 0 .096-.056l3.67-3.67Zm2.065-2.066L12.135 2.52l1.28 1.28 1.122-1.122a.216.216 0 0 0 .065-.157.216.216 0 0 0-.065-.157l-.965-.966a.216.216 0 0 0-.157-.065.226.226 0 0 0-.157.065Z">
+                    </path>
+                    <path
+                      d="M0 14.25V2.75A1.75 1.75 0 0 1 1.75 1H7a.75.75 0 0 1 0 1.5H1.75a.25.25 0 0 0-.25.25v11.5a.25.25 0 0 0 .25.25h11.5a.25.25 0 0 0 .25-.25V8.5a.75.75 0 0 1 1.5 0v5.75c0 .464-.184.909-.513 1.237A1.746 1.746 0 0 1 13.25 16H1.75A1.75 1.75 0 0 1 0 14.25Z">
+                    </path>
+                  </svg>
+                  <!-- Reglas del juego-->
+                </span> Reglas del Juego </h4>
+              <ul class="text-sm text-slate-400 list-disc list-inside space-y-1">
+                <li>Se mostrarán al usuario 4 opciones por ronda.</li>
+                <li>Solo tiene 1 intento por ronda.</li>
+                <li>El usuario tendrá 3 vidas</li>
+                <li>Respuesta correcta, sigue jugando.</li>
+                <li>Respuesta incorrecta quita una vida.</li>
+                <li>Si el usuario pierde su útlima vida el juego se acaba.</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="flex justify-between items-end mb-lg">
+      <div>
+        <h2 class="font-h2 text-h2 ">Repositorios</h2>
+        <p class="text-slate-500 text-body-sm my-1.5">Open source projects.</p>
+      </div>
+      <a target="_blank" class="text-[#2F81F7] hover:underline text-sm font-medium"
+        href="https://github.com/Alejo-Chavez?tab=repositories">View all on GitHub</a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    @if (loading()) {
+    <p>Cargando datos de GitHub...</p>
+    }
+    @if (error()) {
+    <p style="color:red">{{ error() }}</p>
+    }
+    
+    @for (item of repos(); track item.id) {
+    <app-repoc-card [repos]="item"></app-repoc-card>
+    } @empty {
+    @if (!loading()) {
+    <p>No se encontraron repositorios públicos.</p>}
+        }
+        </div>
+  </section>
+</main>
