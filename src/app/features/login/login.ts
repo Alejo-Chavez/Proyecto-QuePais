@@ -1,18 +1,24 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthServices } from '../../core/services/auth.service';
-import { Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule],
+  imports: [FormsModule, ReactiveFormsModule],
   templateUrl: './login.html',
 })
 export class Login {
   private auth = inject(AuthServices);
   private router = inject(Router);
-  
+  private fb = inject(FormBuilder);
+
+  constructor() {
+    this.loginForm.valueChanges.subscribe(() => this.error.set(''));
+  }
+
+
   email: string = '';
   password: string = '';
   loading = signal(false);
@@ -24,9 +30,13 @@ export class Login {
     { email: 'test3@gmail.com', password: '123456' },
   ];
 
-  selectProfile(profile: { email: string; password: string }) {
-    this.email = profile.email;
-    this.password = profile.password;
+  loginForm = this.fb.group({ // angular crea un Typed Form asi q los values ya no son ANY (mi bbdd no recibe edad como string -> debo convertirlo a number)
+    email: ["", [Validators.required, Validators.email]],
+    password: ["", [Validators.required, Validators.minLength(6)]]
+  });
+
+  selectProfile(profile: { email: string; password: string }) { //para autorellenar el login
+    this.loginForm.patchValue(profile);
   }
 
   async onSubmit() {
@@ -34,9 +44,14 @@ export class Login {
     this.error.set('')
 
     try {
-      const success = await this.auth.login(this.email, this.password);
-      if (!success) {
-        this.error.set("Contraseña incorrecta");
+      const { email, password } = this.loginForm.getRawValue();
+      if (!email || !password) return;
+
+      const result = await this.auth.login(email, password);
+
+      if (!result.success) {
+        if (result.error?.includes('Invalid login credentials')) {
+          this.error.set('Contraseña incorrecta')}
       } else {
         this.router.navigate(["/home"]);
       }

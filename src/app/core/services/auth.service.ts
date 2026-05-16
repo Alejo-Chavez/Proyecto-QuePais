@@ -17,11 +17,11 @@ export class AuthServices {
         return await this.supabase.getClient().auth.signUp({email,password})
     }
 
-    async login(email: string, password: string): Promise<boolean> {
+    async login(email: string, password: string): Promise<{ success: boolean; error?: string }> {
         const {data, error} = await this.supabase.getClient().auth.signInWithPassword({email, password})
     
         if(error){console.log("ERROR!!", error.message) 
-            return false};
+            return { success: false, error: error.message }};
 
         if(data.user && data.user.email){
             this.currentUser.set({id: data.user.id, email: data.user.email });
@@ -29,9 +29,9 @@ export class AuthServices {
             const userId = data.session.user.id;
             await this.loadUserProfile(userId);
 
-            return true
+            return { success: true }
         }
-        return false
+        return { success: false, error: "Error inesperado" }
     };
 
     async logout(){
