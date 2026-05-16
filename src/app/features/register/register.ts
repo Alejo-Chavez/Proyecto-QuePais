@@ -18,6 +18,7 @@ export class Register {
   private router = inject(Router);
   private fb = inject(FormBuilder);
   private authService = inject(AuthServices);
+
   userService = inject(UserService);
 
   step = 1;
@@ -76,8 +77,9 @@ export class Register {
       }
 
       console.log("Registrado correctamente");
-      this.authService.currentUser.set({id: userId, email: mail})
-      this.router.navigate(['/home'])
+      this.authService.currentUser.set({id: userId, email: mail});
+      this.authService.userProfile.set(profile);
+      this.router.navigate(['/home']);
 
     } finally {
       this.loading = false;

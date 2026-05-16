@@ -4,66 +4,55 @@
     <!-- Nombre -->
     <div class="hidden sm:block">
         <span class="text-sm sm:text-base font-semibold">
-            <span class="text-[13px] sm:text-2xl">
+            @if (auth.userProfile()) {
+            <span class="">
+                Bienvenido {{ auth.userProfile()?.nombre }}
+            </span>
+            } @else {
+            <span class=" text-[13px] sm:text-2xl">
                 Games_Proyect
             </span>
+            }
         </span>
     </div>
 
-    <!-- Navegación -->
+    
     <div class="flex flex-1 justify-center sm:justify-end items-center gap-2 sm:gap-3">
-
-        <!-- Home -->
-        <button
-            class="h-10 p-4 sm:p-5 flex items-center justify-center text-xs sm:text-sm
-                   box-border border border-gray-500 rounded 
-                   hover:bg-gray-800 transition"
-            routerLink="/home">
-
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 fill="white"
-                 viewBox="0 0 16 16"
-                 width="16"
-                 height="16">
-                <path d="M6.906.384a1.75 1.75 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019a1.75 1.75 0 0 1-1.75 1.75h-2.5a.75.75 0 0 1-.75-.75V8.72H6v5.25a.75.75 0 0 1-.75.75h-2.5A1.75 1.75 0 0 1 1 12.97V5.95c0-.531.242-1.034.657-1.366l5.249-4.2Z"></path>
-            </svg>
+        <button class="h-10 p-4 sm:p-5 flex items-center justify-center text-xs sm:text-sm
+                       box-border border border-gray-500 rounded 
+                       hover:bg-gray-800 "
+                       routerLink="/home">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 16 16" width="16" height="16"><path d="M6.906.384a1.75 1.75 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019a1.75 1.75 0 0 1-1.75 1.75h-2.5a.75.75 0 0 1-.75-.75V8.72H6v5.25a.75.75 0 0 1-.75.75h-2.5A1.75 1.75 0 0 1 1 12.97V5.95c0-.531.242-1.034.657-1.366l5.249-4.2Z"></path></svg>
         </button>
-
-        <!-- Quién soy -->
-        <button
-            class="h-10 p-4 sm:p-5 flex items-center justify-center text-xs sm:text-sm
-                   box-border border border-gray-500 rounded 
-                   hover:bg-gray-800 transition"
-            routerLink="/who-iam">
+        <button class="h-10 p-4 sm:p-5 flex items-center justify-center text-xs sm:text-sm
+                       box-border border border-gray-500 rounded 
+                       hover:bg-gray-800 transition"
+                       routerLink="/who-iam2">
             Quien Soy
         </button>
-
-        <!-- Login -->
-        <button
-            class="h-10 p-4 sm:p-5 flex items-center justify-center text-xs sm:text-sm
-                   box-border border border-gray-500 rounded 
-                   hover:bg-gray-800 transition"
-            routerLink="/login">
+    @if (!auth.currentUser()) {
+        <!--Login -->
+        <button class="h-10 p-4 sm:p-5 flex items-center justify-center text-xs sm:text-sm
+                       box-border border border-gray-500 rounded 
+                       hover:bg-gray-800 transition" routerLink="/login">
             Iniciar
         </button>
 
-        <!-- Registro -->
-        <button
-            class="h-10 p-4 sm:p-5 flex items-center justify-center text-xs sm:text-sm
-                   bg-blue-600 rounded 
-                   hover:bg-blue-700 transition"
-            routerLink="/register">
+        <!--Register -->
+        <button class="h-10 p-4 sm:p-5 flex items-center justify-center text-xs sm:text-sm
+                       bg-blue-600 rounded 
+                       hover:bg-blue-700 transition" routerLink="/register">
             Registro
-        </button>
+        </button>}
+        @if (auth.currentUser()) {
+        <!--LogOut-->
+        <button (click)="auth.logout()" 
+        class="h-10 p-4 sm:p-5 flex items-center justify-center text-xs sm:text-sm
+                       box-border border border-blue-600 rounded bg-[var(--azure-blue)]
+                       hover:bg-[var(--azure-blue-2)] ">
 
-        <!-- Logout -->
-        <button
-            class="h-10 p-4 sm:p-5 flex items-center justify-center text-xs sm:text-sm
-                   box-border border border-blue-600 rounded bg-[var(--azure-blue)]
-                   hover:bg-[var(--azure-blue-2)] transition"
-            routerLink="/home">
             Cerrar sesión
-        </button>
+        </button>}
 
     </div>
 

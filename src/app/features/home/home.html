@@ -1,1 +1,31 @@
-<p>home works!</p>
+<div class="flex pt-16 justify-center  min-h-dvh bg-cover">
+    <div class=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:gap-8 px-6 py-4 min-w-2xs gap-3 self-start">
+
+        @for (game of games; track game.title) {
+        <div class="flex flex-col bg-[var(--ink-black-component)] p-4 md:p-6 lg:p-6 rounded-xl shadow hover:scale-105 transition cursor-pointer "
+            [routerLink]="game.route">
+
+            <div class="flex flex-col h-full ">
+                <div class="flex flex-row self-start md:self-center gap-4 ">
+                    
+                    <div class="size-25 sm:size-30 lg:size-35 shrink-0 mx-auto">
+                        <img class="w-full h-full object-cover" src="https://www.shutterstock.com/image-vector/hangman-icon-vector-symbol-design-600nw-2516503065.jpg"
+                            alt="">
+                    </div>
+                    <p class="h-auto self-center text-[13px] md:hidden">{{game.description}} </p>
+                </div>
+                
+                <div class="flex flex-col flex-1">
+                    <h3 class="pt-2 pl-4 sm:pt-1 sm:pl-6 md:pl-5.5 md:pt-2 lg:pl-6.5 text-lg font-bold">{{ game.title }}</h3>
+
+                    <p class="hidden md:block text-sm text-gray-400">
+                        {{ game.description }}
+                    </p>
+                </div>
+            </div>
+
+        </div>
+        }
+
+    </div>
+</div>
