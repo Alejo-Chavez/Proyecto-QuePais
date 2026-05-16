@@ -1,0 +1,62 @@
+@if(registerForm){
+<div [formGroup]="registerForm" class="flex flex-col gap-2 w-full max-w-md mx-auto px-6 py-6 pt-8 rounded-2xl shadow ">
+
+
+
+    <div class="flex  flex-col  justify-around space-y-4 bg-[var(--ink-black-component)] p-4 min-h-80  rounded-xl ">
+        <h2 class="text-2xl font-bold mb-6 text-center">Cuenta</h2>
+        <p class="text-center text-[14px] animate-fadeIn-2">Porfavor rellene el formulario y registrese para poder
+            acceder a
+            los juegos
+        </p>
+        <div class="flex flex-col justify-center gap-2 pb-2.5 m-0">
+            <div>
+                <p class="pb-1">Correo</p>
+                <input type="email" placeholder="example@gmail.com" formControlName="mail"
+                    class="m-0 flex w-full bg-[#1f1f1f] border border-gray-600 focus:outline-none focus:border-[var(--azure-blue-2)] rounded-lg p-3" />
+                <div class="min-h-6 pt-1">
+                    @if (registerForm.get('mail')?.touched) {
+
+                    @if (registerForm.get('mail')?.errors?.['required']) {
+                    <p class="text-red-500  text-sm">El mail es obligatorio</p>
+                    }
+
+                    @if (registerForm.get('mail')?.errors?.['email']) {
+                    <p class="text-red-500  text-sm">Formato de mail inválido</p>
+                    }}
+                </div>
+            </div>
+
+            <div>
+                <p class="pb-1">Contraseña</p>
+                <input type="password" placeholder="●●●●●●" formControlName="contrasena"
+                    class="placeholder:text- placeholder:text-[12px] tracking-widest m-0 w-full bg-[#1f1f1f] border border-gray-600 focus:outline-none focus:border-[var(--azure-blue-2)] rounded-lg p-3" />
+                <div class="pt-1 min-h-6">
+                    @if (registerForm.get('contrasena')?.touched) {
+
+                    @if (registerForm.get('contrasena')?.errors?.['required']) {
+                    <p class="text-red-500  text-sm">La contraseña es obligatoria</p>
+                    }
+
+                    @if (registerForm.get('contrasena')?.errors?.['minlength']) {
+                    <p class="text-red-500  text-sm">Mínimo 6 caracteres</p>
+                    }
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="flex gap-3 mt-6">
+            <button type="button" (click)="prev.emit()" class="w-1/2 border py-3 rounded-lg">
+                Atrás
+            </button>
+
+            <!--ESTE dispara el submit del padre -->
+            <button type="button" (click)="submit.emit()" [disabled]="loading"
+                class="w-1/2 bg-green-600 text-white py-3 rounded-lg">
+                {{ loading ? 'Creando...' : 'Crear cuenta' }}
+            </button>
+        </div>
+
+    </div>
+</div>}
