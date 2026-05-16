@@ -17,7 +17,7 @@ export class Register {
 
   private router = inject(Router);
   private fb = inject(FormBuilder);
-  authService = inject(AuthServices);
+  private authService = inject(AuthServices);
   userService = inject(UserService);
 
   step = 1;
