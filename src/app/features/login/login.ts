@@ -57,7 +57,8 @@ export class Login {
   async onSubmit() {
     this.loading.set(true);
     this.error.set('')
-
+    this.loginForm.markAllAsTouched();
+    
     try {
       const { email, password } = this.loginForm.getRawValue();
       if (!email || !password) return;
