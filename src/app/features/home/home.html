@@ -1,31 +1,42 @@
-<div class="flex pt-16 justify-center  min-h-dvh bg-cover">
-    <div class=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:gap-8 px-6 py-4 min-w-2xs gap-3 self-start">
-
+<div
+    class="flex pt-16 justify-center min-h-dvh bg-[url('/assets/backgrounds/bgprueba2.jpg')] bg-cover bg-center bg-no-repeat">
+    <section class="flex-grow grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-full">
         @for (game of games; track game.title) {
-        <div class="flex flex-col bg-[var(--ink-black-component)] p-4 md:p-6 lg:p-6 rounded-xl shadow hover:scale-105 transition cursor-pointer "
-            [routerLink]="game.route">
+        <a class="group relative overflow-hidden border-b border-r border-[#414754]/30 h-auto lg:h-[400px] bg-[#1d2027]/40 backdrop-blur cursor-pointer"
+            (click)="goToGame(game.route)" (mouseenter)="playHover()" (click)="playSelect()">
 
-            <div class="flex flex-col h-full ">
-                <div class="flex flex-row self-start md:self-center gap-4 ">
-                    
-                    <div class="size-25 sm:size-30 lg:size-35 shrink-0 mx-auto">
-                        <img class="w-full h-full object-cover" src="https://www.shutterstock.com/image-vector/hangman-icon-vector-symbol-design-600nw-2516503065.jpg"
-                            alt="">
-                    </div>
-                    <p class="h-auto self-center text-[13px] md:hidden">{{game.description}} </p>
-                </div>
-                
-                <div class="flex flex-col flex-1">
-                    <h3 class="pt-2 sm:pt-1 md:text-center text-start md:pt-2 text-lg font-bold">{{ game.title }}</h3>
+            <!-- DESKTOP: img de bg -->
+            <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 hidden lg:block"
+                [src]="game.icon" [alt]="game.title">
 
-                    <p class="justify-end text-start hidden md:block text-sm text-gray-400">
-                        {{ game.description }} pepepe
-                    </p>
-                </div>
+            <!-- DESKTOP: overlay gradiente en las cards -->
+            <div class="absolute inset-0 hidden lg:block"
+                style="background: linear-gradient(0deg, rgba(245, 245, 245, 0.103) 0%, rgba(7, 18, 36, 0.253) 100%)">
             </div>
 
-        </div>
-        }
+            <!-- DESKTOP: hover para ver la info -->
+            <div class="absolute inset-0 hidden lg:flex flex-col justify-end p-8">
+                <div class="h-px w-0 bg-[#acc7ff] group-hover:w-full transition-all duration-500"></div>
 
-    </div>
+                <h3 class="text-xl transition-colors font-semibold mt-2">
+                    {{ game.title }}
+                </h3>
+
+                <p class="text-sm text-[#c1c6d6] max-h-0 overflow-hidden group-hover:bg-[#1d2027]/60  rounded-xs p-2 group-hover:max-h-40 opacity-0 group-hover:opacity-100 transition-all duration-300 mt-1 leading-relaxed">
+                    {{ game.description }}
+                </p>
+            </div>
+
+            <!-- MOBILE / TABLET: contenido siempre -->
+            <div class="grid grid-cols-[auto_1fr] gap-x-4 p-4 lg:hidden">
+                <div class="size-25 sm:size-30 rounded-lg overflow-hidden">
+                    <img class="w-full h-full object-cover" [src]="game.icon" [alt]="game.title">
+                </div>
+                <h3 class="text-lg font-bold  self-center">{{ game.title }}</h3>
+                <p class="text-sm text-[#c1c6d6] col-span-2 mt-1 leading-relaxed">{{ game.description }}</p>
+            </div>
+
+        </a>
+        }
+    </section>
 </div>
