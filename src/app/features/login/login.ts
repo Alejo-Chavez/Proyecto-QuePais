@@ -9,10 +9,25 @@ import { Router } from '@angular/router';
   imports: [FormsModule, ReactiveFormsModule],
   templateUrl: './login.html',
 })
-export class Login {
+export class Login {  
   private auth = inject(AuthServices);
   private router = inject(Router);
   private fb = inject(FormBuilder);
+   
+  mouseX = 0;
+  mouseY = 0;
+
+  onMouseMove(event: MouseEvent): void {
+
+    const x = event.clientX / window.innerWidth - 0.5;
+    const y = event.clientY / window.innerHeight - 0.5;
+
+    // intensidad del efecto
+    const strength = 10;
+
+    this.mouseX = x * strength;
+    this.mouseY = y * strength;
+  }
 
   constructor() {
     this.loginForm.valueChanges.subscribe(() => this.error.set('')); //"borro" el error de contraseña incorrecta o se pisa con el de minimo de caracteres
