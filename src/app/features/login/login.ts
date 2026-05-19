@@ -15,7 +15,7 @@ export class Login {
   private fb = inject(FormBuilder);
 
   constructor() {
-    this.loginForm.valueChanges.subscribe(() => this.error.set(''));
+    this.loginForm.valueChanges.subscribe(() => this.error.set('')); //"borro" el error de contraseña incorrecta o se pisa con el de minimo de caracteres
   }
 
 
