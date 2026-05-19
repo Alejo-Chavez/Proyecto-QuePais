@@ -21,6 +21,9 @@ export class Register {
 
   userService = inject(UserService);
 
+  mouseX = 0;
+  mouseY = 0;
+
   step = 1;
   loading = false;
 
@@ -32,6 +35,7 @@ export class Register {
   mail: ["", [Validators.required, Validators.email]],
   contrasena: ["", [Validators.required, Validators.minLength(6)]]
 });
+
 
   async handleSubmit(): Promise<void> {
     if(this.loading) return;  
@@ -84,7 +88,7 @@ export class Register {
     } finally {
       this.loading = false;
     }
-  }
+  };
 
   next() {
     this.registerForm.get('nombre')?.markAsTouched();
@@ -100,9 +104,21 @@ export class Register {
     }
 
     this.step = 2;
-  }
+  };
 
   prev() {
     this.step--;
-  }
+  };
+
+  onMouseMove(event: MouseEvent): void {
+
+    const x = event.clientX / window.innerWidth - 0.5;
+    const y = event.clientY / window.innerHeight - 0.5;
+
+    // intensidad del efecto
+    const strength = 10;
+
+    this.mouseX = x * strength;
+    this.mouseY = y * strength;
+  };
 }
