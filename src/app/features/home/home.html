@@ -1,8 +1,9 @@
-<div
-    class="flex pt-16 justify-center min-h-dvh bg-[url('/assets/backgrounds/bgprueba2.jpg')] bg-cover bg-center bg-no-repeat">
-    <section class="flex-grow grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-full">
+<div class="flex pt-16 relative justify-center min-h-dvh scale-100 bg-cover bg-center bg-no-repeat">
+
+    <div class="absolute inset-0 bg-gray-800/35 " ></div>
+    <section class="flex-grow grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-full  justify-end">
         @for (game of games; track game.title) {
-        <a class="group relative overflow-hidden border-b border-r border-[#414754]/30 h-auto lg:h-[400px] bg-[#1d2027]/40 backdrop-blur cursor-pointer"
+        <a class="group relative overflow-hidden h-auto lg:min-h-[calc(100dvh-4rem)] bg-[#1d2027]/40 backdrop-blur cursor-pointer"
             (click)="goToGame(game.route)" (mouseenter)="playHover()" (click)="playSelect()">
 
             <!-- DESKTOP: img de bg -->
@@ -11,7 +12,7 @@
 
             <!-- DESKTOP: overlay gradiente en las cards -->
             <div class="absolute inset-0 hidden lg:block"
-                style="background: linear-gradient(0deg, rgba(245, 245, 245, 0.103) 0%, rgba(7, 18, 36, 0.253) 100%)">
+                style="background: linear-gradient(0deg, rgba(158, 28, 197, 0.096) 0%,rgba(15, 51, 170, 0.089)) 100%">
             </div>
 
             <!-- DESKTOP: hover para ver la info -->
@@ -39,4 +40,4 @@
         </a>
         }
     </section>
-</div>
+    </div>
