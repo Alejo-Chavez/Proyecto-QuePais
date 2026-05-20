@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { GithubService } from './service/github';
 import { RepoCard } from './components/repo-card/repo-card';
+
 @Component({
   selector: 'app-who-iam',
   imports: [RepoCard],

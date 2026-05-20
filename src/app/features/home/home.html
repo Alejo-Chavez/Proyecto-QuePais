@@ -1,1 +1,43 @@
-<p>home works!</p>
+<div class="flex pt-16 relative justify-center min-h-dvh scale-100 bg-cover bg-center bg-no-repeat">
+
+    <div class="absolute inset-0 bg-gray-800/35 " ></div>
+    <section class="flex-grow grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-full  justify-end">
+        @for (game of games; track game.title) {
+        <a class="group relative overflow-hidden h-auto lg:min-h-[calc(100dvh-4rem)] bg-[#1d2027]/40 backdrop-blur cursor-pointer"
+            (click)="goToGame(game.route)" (mouseenter)="playHover()" (click)="playSelect()">
+
+            <!-- DESKTOP: img de bg -->
+            <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 hidden lg:block"
+                [src]="game.icon" [alt]="game.title">
+
+            <!-- DESKTOP: overlay gradiente en las cards -->
+            <div class="absolute inset-0 hidden lg:block"
+                style="background: linear-gradient(0deg, rgba(158, 28, 197, 0.096) 0%,rgba(15, 51, 170, 0.089)) 100%">
+            </div>
+
+            <!-- DESKTOP: hover para ver la info -->
+            <div class="absolute inset-0 hidden lg:flex flex-col justify-end p-8">
+                <div class="h-px w-0 bg-[#acc7ff] group-hover:w-full transition-all duration-500"></div>
+
+                <h3 class="text-xl transition-colors font-semibold mt-2">
+                    {{ game.title }}
+                </h3>
+
+                <p class="text-sm text-[#c1c6d6] max-h-0 overflow-hidden group-hover:bg-[#1d2027]/60  rounded-xs p-2 group-hover:max-h-40 opacity-0 group-hover:opacity-100 transition-all duration-300 mt-1 leading-relaxed">
+                    {{ game.description }}
+                </p>
+            </div>
+
+            <!-- MOBILE / TABLET: contenido siempre -->
+            <div class="grid grid-cols-[auto_1fr] gap-x-4 p-4 lg:hidden">
+                <div class="size-25 sm:size-30 rounded-lg overflow-hidden">
+                    <img class="w-full h-full object-cover" [src]="game.icon" [alt]="game.title">
+                </div>
+                <h3 class="text-lg font-bold  self-center">{{ game.title }}</h3>
+                <p class="text-sm text-[#c1c6d6] col-span-2 mt-1 leading-relaxed">{{ game.description }}</p>
+            </div>
+
+        </a>
+        }
+    </section>
+    </div>

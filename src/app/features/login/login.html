@@ -1,1 +1,136 @@
-<p>login works!</p>
+<!-- CONTENEDOR PRINCIPAL -->
+<!-- Ahora usamos position relative para poder mover el fondo -->
+<div class="relative min-h-screen flex items-start justify-center pt-30 px-5 sm:px-0 overflow-hidden"
+    (mousemove)="onMouseMove($event)">
+
+    <!-- FONDO QUE SE MUEVE -->
+    <!-- El bg estaba en el div, ahora es un elemento separado -->
+    <div class="absolute inset-0 scale-95 will-change-transform" [style.transform]="'scale(1.1) translate(' + (-mouseX) + 'px, ' + (-mouseY) + 'px)' ">
+        <img src="/assets/bg-imgs/3d-render-low-poly-plexus-design-network-communications.jpg"
+            class="w-full h-full object-cover" alt="background" />
+    </div>
+
+
+    <div class="absolute inset-0 bg-black/10"></div>
+    <!-- FORM (queda arriba del fondo) -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()"
+        class="relative z-10 flex flex-col items-center text-center border-[1px] border-[var(--ale)] gap-2 w-full max-w-md p-4 bg-[var(--ink-black-component)]/97 rounded-lg shadow-2xl max-w-[450px]">
+
+        <h1 class="text-2xl font-bold animate-fadeIn">
+            Bienvenido de nuevo
+        </h1>
+
+        <span class="mb-4 text-[14px] animate-fadeIn-2">
+            Ingresa tus credenciales para acceder.
+        </span>
+
+        <!-- 🔹 PERFIL SELECTOR (sin cambios) -->
+        <div class="flex flex-row justify-center gap-4 mb-6">
+
+            <button type="button" (click)="selectProfile(profiles[0])"
+                class="group hover:cursor-pointer flex flex-col gap-1">
+
+                <div class="rounded-lg group-hover:border-2 border-2 border-[#414754]
+                 group-hover:border-[var(--primary)]
+                 text-3xl w-14 h-14 flex items-center justify-center bg-[#32353C]">
+                    <i class="fa-regular fa-circle-user"></i>
+                </div>
+
+                <span class="text-xs">Perfil 1</span>
+            </button>
+
+            <button type="button" (click)="selectProfile(profiles[1])"
+                class="group hover:cursor-pointer flex flex-col gap-1">
+
+                <div class="rounded-lg group-hover:border-2 border-2 border-[#414754]
+                 group-hover:border-[var(--primary)]
+                 text-3xl w-14 h-14 flex items-center justify-center bg-[#32353C]">
+                    <i class="fa-regular fa-circle-user"></i>
+                </div>
+
+                <span class="text-xs">Perfil 2</span>
+            </button>
+
+            <button type="button" (click)="selectProfile(profiles[2])"
+                class="group hover:cursor-pointer flex flex-col gap-1">
+
+                <div class="rounded-lg group-hover:border-2 border-2 border-[#414754]
+                 group-hover:border-[var(--primary)]
+                 text-3xl w-14 h-14 flex items-center justify-center bg-[#32353C]">
+                    <i class="fa-regular fa-circle-user"></i>
+                </div>
+
+                <span class="text-xs">Perfil 3</span>
+            </button>
+
+        </div>
+
+        <!-- FORM FIELDS (igual que antes) -->
+        <div class="w-[95%] sm:w-full flex flex-col gap-1">
+
+            <!-- EMAIL -->
+            <div class="mb-3">
+                <label class="block text-sm mb-1 text-start">Email</label>
+
+                <input type="email" placeholder="ejemplo1@gmail.com" formControlName="email" class="input-field w-full p-2 pl-3 rounded bg-[#1f1f1f]
+                 border border-gray-600 focus:outline-none
+                 focus:border-[var(--azure-blue-2)]
+                 placeholder:text-sm placeholder:tracking-wider" />
+
+                @if(loginForm.get('email')?.invalid && loginForm.get('email')?.touched){
+                <small>
+                    @if (loginForm.get('email')?.errors?.['required']) {
+                    <p class="text-start text-red-500">Email es obligatorio</p>
+                    }
+                    @if (loginForm.get('email')?.errors?.['email']) {
+                    <p class="text-start text-red-500">Ingrese un email válido</p>
+                    }
+                </small>
+                }
+
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="mb-3">
+                <label class="block text-sm mb-1 text-start">Contraseña</label>
+
+                <input type="password" placeholder="••••••••" formControlName="password" class="w-full p-2 pl-3 rounded bg-[#1f1f1f]
+                 border border-gray-600 focus:outline-none
+                 focus:border-[var(--azure-blue-2)]
+                 placeholder:text-xs placeholder:tracking-widest" />
+
+                @if(loginForm.get('password')?.invalid && loginForm.get('password')?.touched){
+                <small>
+                    @if (loginForm.get('password')?.errors?.['required']) {
+                    <p class="text-start text-red-500">Contraseña es obligatorio</p>
+                    }
+                    @if (loginForm.get('password')?.errors?.['minlength']) {
+                    <p class="text-start text-red-500">
+                        La contraseña debe ser al menos de 6 caracteres
+                    </p>
+                    }
+                </small>
+                }
+
+            </div>
+
+            <!-- ERROR GLOBAL -->
+            @if (error()) {
+            <div class="text-red-500 text-sm text-start w-full mb-2">
+                {{ error() }}
+            </div>
+            }
+            
+            <!-- SUBMIT -->
+            <!--[disabled]"loading()" puedo tocar el boton siempre que no esté cargando-->
+
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded
+               hover:text-[17px] disabled:opacity-95" 
+               [disabled]="loading()">
+                Iniciar sesión
+            </button>
+
+        </div>
+
+    </form>
+</div>

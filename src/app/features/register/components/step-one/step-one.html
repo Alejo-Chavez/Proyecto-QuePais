@@ -1,0 +1,80 @@
+<div [formGroup]="registerForm" class="flex flex-col gap-2 w-full max-w-md mx-auto px-6 py-6 pt-8 rounded-2xl shadow ">
+
+
+    <div class="flex flex-col justify-center  bg-[var(--ink-black-component)]/88 rounded-lg min-h-90 p-4 gap-2">
+
+        <div class="flex flex-col gap-2 mb-4">
+            <h2 class="text-4xl font-bold text-center pb-1 animate-fadeIn mt-1">
+                Bienvenido
+            </h2>
+            <p class="text-center text-[14px] animate-fadeIn-2">Porfavor rellene el formulario y registrese para poder
+                acceder a los juegos</p>
+        </div>
+
+        <div class="flex flex-col">
+            <p class="m-0 pb-1 text-[14px] pl-1.5">Nombre</p>
+            <input type="text" placeholder="Pedro" formControlName="nombre"
+                class="bg-[#1f1f1f] border border-gray-600 focus:outline-none focus:border-[var(--azure-blue-2)] rounded-lg p-3" />
+
+            <div class="min-h-5">
+                @if (registerForm.get('nombre')?.touched &&
+                registerForm.get('nombre')?.invalid) {
+
+                <p class="text-red-500 text-[12px] ">
+                    Nombre es obligatorio
+                </p>
+                }
+            </div>
+
+
+        </div>
+
+        <div class="flex flex-col">
+            <p class="m-0 pb-1 text-[14px] pl-1.5">Apellido</p>
+            <input type="text" placeholder="Ramos" formControlName="apellido"
+                class="bg-[#1f1f1f] border border-gray-600 focus:outline-none focus:border-[var(--azure-blue-2)] rounded-lg p-3" />
+            <div class="min-h-5">
+                @if (registerForm.get('apellido')?.touched &&
+                registerForm.get('apellido')?.invalid) {
+
+                <p class="text-red-500 text-[12px]">
+                    Apellido es obligatorio
+                </p>
+                }
+            </div>
+
+
+        </div>
+
+        <div class="flex flex-col">
+            <p class="m-0 pb-1 text-[14px] pl-1.5">Edad</p>
+            <input type="number" placeholder="18" formControlName="edad"
+                class="bg-[#1f1f1f] border border-gray-600 focus:outline-none focus:border-[var(--azure-blue-2)] rounded-lg p-3" />
+            <div class="min-h-5">
+                @if (registerForm.get('edad')?.touched &&
+                registerForm.get('edad')?.invalid) {
+
+                <p class="text-red-500 text-[12px] ">
+                    Edad inválida
+                </p>
+                }
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <div class="flex gap-2 w-full min-h-15">
+        <button type="button" routerLink="/login"
+            class="bg-[var(--purssian-blue)] rounded-lg px-3 hover:bg-[#]  hover:font-medium hover:text-[18px]">
+            Ya tengo cuenta
+        </button>
+
+        <button type="button" (click)="next.emit()"
+            class=" bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex-1">
+            Siguiente >
+        </button>
+    </div>
+
+</div>

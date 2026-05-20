@@ -1,1 +1,38 @@
-<p>register works!</p>
+<div class="relative min-h-screen overflow-hidden" 
+ (mousemove)="onMouseMove($event)">
+  <!--imagen de bg-->
+  <div class="absolute inset-0 will-change-transform scale-100" [style.transform]="'scale(1.1) translate(' + (-mouseX) + 'px, ' + (-mouseY) + 'px)'">
+    <img src="/assets/bg-imgs/3409297.jpg" alt="background" class="w-full h-full object-cover">
+  </div>
+
+  <form [formGroup]="registerForm">
+
+    <div class="min-h-screen flex items-center justify-center items-start pt-16 ">
+
+      <div class="w-full max-w-md overflow-hidden">
+
+        <div class="flex transition-transform duration-300 ease-in-out"
+          [style.transform]="'translateX(-' + (step - 1) * 100 + '%)'">
+
+          <!-- STEP 1 -->
+          <div class="w-full flex-shrink-0">
+
+            <app-step-one [registerForm]="registerForm" (next)="next()" />
+
+          </div>
+
+          <!-- STEP 2 -->
+          <div class="w-full flex-shrink-0">
+
+            <app-step-two [registerForm]="registerForm" [loading]="loading" (submit)="handleSubmit()" (prev)="prev()" />
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </form>
+</div>
