@@ -27,7 +27,7 @@ export class Register {
   step = 1;
   loading = false;
 
- 
+  
   registerForm = this.fb.nonNullable.group({ // angular crea un Typed Form asi q los values ya no son ANY (mi bbdd no recibe edad como string -> debo convertirlo a number)
   nombre: ["", [Validators.required]],
   apellido: ["", [Validators.required]],
@@ -35,6 +35,17 @@ export class Register {
   mail: ["", [Validators.required, Validators.email]],
   contrasena: ["", [Validators.required, Validators.minLength(6)]]
 });
+
+  constructor() {
+    this.registerForm.get('mail')?.valueChanges.subscribe(() => {
+      const control = this.registerForm.get('mail');
+      if (control?.hasError('alreadyRegistered')) {
+        const errors = { ...control.errors };
+        delete errors['alreadyRegistered'];
+        control.setErrors(Object.keys(errors).length > 0 ? errors : null);
+      }
+    });
+  }
 
 
   async handleSubmit(): Promise<void> {
@@ -55,7 +66,8 @@ export class Register {
       const { data, error } = await this.authService.register(mail, contrasena); //llamo a la funcion y paso parametros
 
       if (error) {
-        alert(error.message);
+        this.registerForm.get('mail')?.setErrors({ alreadyRegistered: true });
+        this.registerForm.get('mail')?.markAsTouched();
         this.loading = false;
         return;
       } //si no hay error, se tuvo que crear un auth user
@@ -63,7 +75,7 @@ export class Register {
       const userId = data.user?.id //si se creó sin ID, error
 
       if (!userId) { 
-        alert("No se pudo obtener el usuario");
+        console.error("No se pudo obtener el usuario");
         this.loading = false; //cancelamos y cortamos el flujo
         return;
       }
@@ -74,7 +86,7 @@ export class Register {
       await this.userService.createProfile(userId, profile);
 
       if (profileError) {
-        alert(profileError.message);
+        console.error(profileError.message);
         
         this.loading = false;
         return;
