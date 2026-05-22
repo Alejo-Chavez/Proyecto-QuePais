@@ -24,6 +24,10 @@
 
                     @if (registerForm.get('mail')?.errors?.['email']) {
                     <p class="text-red-500  text-sm">Formato de mail inválido</p>
+                    }
+
+                    @if (registerForm.get('mail')?.errors?.['alreadyRegistered']) {
+                    <p class="text-red-500  text-sm">Correo ya registrado</p>
                     }}
                 </div>
             </div>
