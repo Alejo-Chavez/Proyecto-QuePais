@@ -1,5 +1,4 @@
 @import 'tailwindcss';
-@import "tailwindcss";
 
 /*Variables globales*/
 :root{
@@ -62,4 +61,38 @@ html::-webkit-scrollbar {
 
 .animate-fadeIn-3{
   animation: fadeIn 0.8 ease-in forwards;
+}
+
+/* ============== ahorcado (hangman) ============== */
+@keyframes hologram-flicker {
+  0% { opacity: 0.97; }
+  5% { opacity: 0.95; }
+  10% { opacity: 0.97; }
+  15% { opacity: 0.9; }
+  20% { opacity: 0.98; }
+  100% { opacity: 1; }
+}
+@keyframes key-appear {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(12px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.08) translateY(-2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

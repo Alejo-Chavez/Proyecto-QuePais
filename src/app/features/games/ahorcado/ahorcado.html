@@ -1,0 +1,209 @@
+
+<div class="pt-16">
+  @if(!isPlaying()) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-[#10131a]/80 backdrop-blur-sm">
+      <button
+        (click)="startGame()"
+        class="bg-[#acc7ff] hover:brightness-110 text-[#002f68] px-16 py-5 rounded-[1.25rem] text-2xl font-bold uppercase tracking-widest transition-all active:scale-95 shadow-2xl shadow-[#acc7ff]/20"
+      >
+        JUGAR
+      </button>
+    </div>
+  }
+
+  <main
+    class="min-h-screen bg-[url('/assets/backgrounds/screen2.png')] opacity-95 flex flex-col items-center px-4 py-4 relative"
+  >
+    <div class="absolute inset-0 opacity-30 pointer-events-none"
+      style="background-image: linear-gradient(to right, #1d2027 1px, transparent 1px), linear-gradient(to bottom, #1d2027 1px, transparent 1px); background-size: 40px 40px;">
+    </div>
+
+    <div class="relative z-10 w-full max-w-md flex items-center gap-3 mb-3">
+      <div class="flex-1 bg-[#1d2027] border border-[#414754] p-2.5 rounded-xl flex flex-col items-center shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]">
+        <span class="text-[10px] font-medium text-[#c1c6d6] uppercase tracking-wider">Racha actua</span>
+        <span class="text-xl font-bold text-[#498fff]">{{ score() }}</span>
+      </div>
+      <div class="w-14 h-16 bg-[#1d2027] border border-[#414754] rounded-xl flex flex-col items-center justify-center shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]">
+        <svg class="size-4 text-red-400 fill-red-400" viewBox="0 0 24 24">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+        <span class="text-sm text-red-400 font-bold">{{ lives() }}</span>
+      </div>
+      <div class="flex-1 bg-[#1d2027] border border-[#414754] p-2.5 rounded-xl flex flex-col items-center shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]">
+        <span class="text-[10px] font-medium text-[#c1c6d6] uppercase tracking-wider">Mejor racha</span>
+        <span class="text-xl font-bold text-yellow-400">{{ bestScore() }}</span>
+      </div>
+    </div>
+
+    <!-- DESKTOP: flex row wrapper for PISTA + game content -->
+    <div class="relative flex flex-col lg:flex-row items-start justify-between gap-4 w-full max-w-5xl relative z-10">
+
+      <!-- PISTA (desktop left column) -->
+      <div class="hidden lg:flex flex-col gap-2 w-48 shrink-0 mt-2">
+        <button (click)="toggleHint()"
+          class="w-full bg-[#1d2027] border border-[#414754] hover:border-[#acc7ff]/50 rounded-lg px-4 py-3 text-[#acc7ff] font-semibold text-sm uppercase tracking-wider transition-all">
+          PISTA
+        </button>
+        @if(showHint()) {
+          <div class="bg-[#1d2027] border border-[#414754] rounded-lg p-4">
+            <p class="text-sm text-[#c1c6d6] leading-relaxed">{{ currentWord.hint }}</p>
+          </div>
+        }
+      </div>
+
+      <!-- Game column (word + hologram) -->
+      <div class="absolute left-1/2 -translate-x-1/2 flex flex-col items-center flex-1 max-w-md">
+
+        <!-- WORD -->
+        <div class="flex flex-wrap justify-center gap-1.5 mb-3 w-full">
+          @for(letter of maskedWord; track $index) {
+            <div class="flex flex-col items-center">
+              <span class="text-2xl font-bold text-[#acc7ff] h-8">
+                {{ letter === '_' ? '' : letter }}
+              </span>
+              <div class="w-8 h-0.5 bg-[#acc7ff] rounded-full"></div>
+            </div>
+          }
+        </div>
+
+        <!-- HOLOGRAM CONTAINER (SVG + KEYBOARD) -->
+        <div class="border border-[#414754] rounded-lg p-lg w-full relative overflow-hidden bg-[#10131a]/40 backdrop-blur">
+          <div class="absolute inset-0 pointer-events-none opacity-30" style="background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1) 1px, transparent 1px, transparent 2px);"></div>
+          <div class="absolute bottom-[-20px] left-1/2 -translate-x-1/2 w-[120%] h-10 pointer-events-none" style="background: radial-gradient(ellipse at bottom, rgba(47, 129, 247, 0.4) 0%, transparent 70%);"></div>
+
+          <div class="flex flex-col items-center gap-3">
+            <!-- SVG -->
+            <div class="animate-[fade-in_0.5s_ease-out_both]">
+            <svg
+              viewBox="0 0 400 400"
+              width="240"
+              height="240"
+              class="overflow-visible"
+            >
+              <!-- CUERDA -->
+              <line
+                x1="200"
+                y1="20"
+                x2="200"
+                [attr.y2]="lives() <= 0 ? 260 : 60"
+                class="stroke-[#498fff] stroke-[4]"
+              />
+
+              <!-- BODY -->
+              <g
+                [style.transform]="lives() <= 0 ? 'translateY(200px)' : 'translateY(0px)'"
+                class="transition-all duration-1000"
+              >
+                <!-- HEAD -->
+                @if(lives() <= 5) {
+                  <g id="head">
+                    <circle cx="200" cy="80" r="20" class="stroke-[#498fff] stroke-[4] fill-transparent" />
+                    @if(lives() > 0) {
+                      <g>
+                        <circle cx="193" cy="80" r="4" class="fill-[#498fff]" />
+                        <circle cx="207" cy="80" r="4" class="fill-[#498fff]" />
+                      </g>
+                    } @else {
+                      <g class="stroke-red-500 stroke-[3]">
+                        <line x1="190" y1="78" x2="196" y2="84"/>
+                        <line x1="190" y1="84" x2="196" y2="78"/>
+                        <line x1="204" y1="78" x2="210" y2="84"/>
+                        <line x1="204" y1="84" x2="210" y2="78"/>
+                      </g>
+                    }
+                  </g>
+                }
+
+                <!-- TORSO -->
+                @if(lives() <= 4) {
+                  <line x1="200" y1="100" x2="200" y2="150" class="stroke-[#498fff] stroke-[4]" />
+                }
+
+                <!-- ARM LEFT -->
+                @if(lives() <= 3) {
+                  <line x1="200" y1="120"
+                    [attr.x2]="lives() <= 0 ? 180 : 170"
+                    [attr.y2]="lives() <= 0 ? 210 : 140"
+                    class="stroke-[#498fff] stroke-[4] transition-all duration-1000"
+                  />
+                }
+
+                <!-- ARM RIGHT -->
+                @if(lives() <= 2) {
+                  <line x1="200" y1="120"
+                    [attr.x2]="lives() <= 0 ? 220 : 230"
+                    [attr.y2]="lives() <= 0 ? 210 : 140"
+                    class="stroke-[#498fff] stroke-[4] transition-all duration-1000"
+                  />
+                }
+
+                <!-- LEG LEFT -->
+                @if(lives() <= 1) {
+                  <line x1="200" y1="150" x2="170" y2="190" class="stroke-[#498fff] stroke-[4]" />
+                }
+
+                <!-- LEG RIGHT -->
+                @if(lives() <= 0) {
+                  <line x1="200" y1="150" x2="230" y2="190" class="stroke-[#498fff] stroke-[4]" />
+                }
+              </g>
+
+              <!-- FLOOR -->
+              <line x1="10" y1="250" x2="150" y2="250" class="stroke-zinc-500 stroke-[4]" />
+              <line x1="250" y1="250" x2="390" y2="250" class="stroke-zinc-500 stroke-[4]" />
+
+              <!-- STRUCTURE -->
+              <line x1="100" y1="250" x2="100" y2="20" class="stroke-zinc-500 stroke-[4]" />
+              <line x1="100" y1="20" x2="200" y2="20" class="stroke-zinc-500 stroke-[4]" />
+            </svg>
+            </div>
+
+            <!-- KEYBOARD -->
+            <div class="flex flex-col gap-xs w-full">
+              @for(row of keyboardRows; track $index) {
+                <div class="flex justify-center gap-xs sm:gap-sm">
+                  @for(letter of row; track letter) {
+                    <button
+                      (click)="selectLetter(letter)"
+                      [disabled]="usedLetters.includes(letter)"
+                      [style.animation-delay]="$any(keyDelays)[letter] + 'ms'" 
+                      class="w-8 h-10 sm:w-12 sm:h-14 flex items-center justify-center font-semibold text-sm sm:text-lg text-[#acc7ff] transition-all"
+                      [ngClass]="!usedLetters.includes(letter)
+                        ? 'bg-[#acc7ff]/5 hover:bg-[#acc7ff]/15 backdrop-blur-sm border border-[#acc7ff]/30 shadow-[inset_0_0_8px_rgba(172,199,255,0.1)] hover:shadow-[0_0_15px_rgba(172,199,255,0.3),inset_0_0_8px_rgba(172,199,255,0.2)] animate-[key-appear_0.35s_ease-out_both] animate-[hologram-flicker_3s_infinite]'
+                        : 'bg-[#acc7ff]/3 border-[#414754]/50 opacity-35 cursor-not-allowed animate-[key-appear_0.35s_ease-out_both]'"
+                    >
+                      {{ letter }}
+                    </button>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- MOBILE / TABLET: PISTA button below hologram -->
+        <div class="lg:hidden w-full mt-4">
+          <button (click)="openHint()"
+            class="w-full bg-[#1d2027] border border-[#414754] hover:border-[#acc7ff]/50 rounded-lg px-4 py-3 text-[#acc7ff] font-semibold text-sm uppercase tracking-wider transition-all">
+            PISTA
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- MOBILE / TABLET: hint overlay modal -->
+    @if(showHint()) {
+      <div (click)="closeHint()" class="fixed inset-0 z-50 flex items-center justify-center bg-[#10131a]/80 backdrop-blur-sm lg:hidden">
+        <div (click)="$event.stopPropagation()" class="bg-[#1d2027] border border-[#414754] rounded-lg p-6 max-w-sm mx-4 w-full">
+          <h3 class="text-white font-semibold text-lg mb-3">Pista</h3>
+          <p class="text-sm text-[#c1c6d6] leading-relaxed">{{ currentWord.hint }}</p>
+          <button (click)="closeHint()"
+            class="mt-5 w-full bg-[#acc7ff] hover:brightness-110 text-[#002f68] rounded-lg px-4 py-2.5 font-semibold text-sm uppercase tracking-wider transition-all active:scale-95">
+            CERRAR
+          </button>
+        </div>
+      </div>
+    }
+  </main>
+</div>
