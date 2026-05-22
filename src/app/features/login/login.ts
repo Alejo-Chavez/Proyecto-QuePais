@@ -19,8 +19,8 @@ export class Login {
 
   onMouseMove(event: MouseEvent): void {
 
-    const x = event.clientX / window.innerWidth - 0.5;
-    const y = event.clientY / window.innerHeight - 0.5;
+    const x = event.clientX / window.innerWidth - 0.5; //-0.5 sabe que estás izquierda, 0.5 en derecha, 0 centro
+    const y = event.clientY / window.innerHeight - 0.5; 
 
     // intensidad del efecto
     const strength = 10;
