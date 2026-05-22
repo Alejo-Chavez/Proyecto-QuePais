@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-//import { GlobalChat } from '../../../shared/global-chat/global-chat'; 
+import { GlobalChat } from '../../../shared/global-chat/global-chat'; 
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, GlobalChat],
   templateUrl: './layout.html',
 })
 export class Layout {

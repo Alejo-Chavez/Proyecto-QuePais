@@ -2,6 +2,18 @@ import { Component, signal, inject } from '@angular/core';
 import { Card } from './models/cards.model';
 import { Sound } from '../../../core/services/sounds.service';
 
+/*
+  ── Tabla game_results (crear en Supabase SQL Editor) ──
+  CREATE TABLE game_results (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES user_profile(id),
+    game_name TEXT NOT NULL,
+    score INT NOT NULL,
+    details JSONB,
+    played_at TIMESTAMPTZ DEFAULT now()
+  );
+*/
+
 @Component({
   selector: 'app-mayor-o-menor',
   imports: [],
@@ -27,12 +39,14 @@ export class MayorOMenor {
   rightRevealed = signal(false);
   evaluating = signal(false);
   suits = ["spades", "hearts", "clubs", "diamonds"]
+  cartasAcertadas = 0;
 
   startGame() {
     this.playing.set(true);
     this.sound.playMusic('bg-lowerorhigher')
     this.score.set(0);
     this.lives.set(5);
+    this.cartasAcertadas = 0;
     this.generateDeck();
     this.shuffleDeck();
     this.currentCard.set(this.drawCard());
@@ -89,6 +103,7 @@ export class MayorOMenor {
     if (isCorrect) {
       this.score.update(s => s + this.pointsMap[option]);
       if (this.score() > this.bestScore()) this.bestScore.set(this.score());
+      this.cartasAcertadas++;
       this.sound.playSfx('correct');
     } else {
       this.lives.update(l => l - 1);
@@ -96,6 +111,23 @@ export class MayorOMenor {
     }
 
     if (this.lives() <= 0) {
+      // ── guardar resultado en la BD (descomentar cuando exista la tabla) ──
+      // requiere:
+      //   import { SupabaseService } from '../../../core/services/supabase.service';
+      //   import { AuthServices } from '../../../core/services/auth.service';
+      //   private supabase = inject(SupabaseService);
+      //   private auth = inject(AuthServices);
+      //
+      // const user = this.auth.currentUser();
+      // if (user) {
+      //   await this.supabase.getClient().from('game_results').insert({
+      //     user_id: user.id,
+      //     game_name: 'mayor-o-menor',
+      //     score: this.score(),
+      //     details: { cartas_acertadas: this.cartasAcertadas }
+      //   });
+      // }
+
       setTimeout(() => {
         this.sound.stopMusic();
         this.playing.set(false);

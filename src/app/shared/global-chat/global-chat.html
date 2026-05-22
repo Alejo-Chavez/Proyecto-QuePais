@@ -1,0 +1,70 @@
+<!-- Panel de Chat -->
+<aside class="fixed top-0 right-0 h-full w-full min-[640px]:w-[300px] md:w-[400px] bg-[#181c23] border-l border-[#414754] z-[60] flex flex-col font-sans">
+
+    <!-- Header -->
+    <div class="p-[1.5rem] border-b border-[#414754] flex items-center justify-between bg-[#1d2027]">
+        <div class="flex items-center gap-3">
+            <div class="w-2 h-2 rounded-full bg-[#acc7ff] animate-pulse"></div>
+            <h3 class="text-[16px] font-semibold text-[#e0e2ec]">Chat global</h3>
+        </div>
+
+        <button (click)="close.emit()" class="text-[#c1c6d6] hover:text-white p-1">
+            <span class="material-symbols-outlined text-[24px]">close</span>
+        </button>
+    </div>
+
+    <!-- Messages -->
+    <div class="flex-1 overflow-y-auto p-[1.5rem] space-y-6">
+
+        <!-- REAL MESSAGES -->
+        @for (msg of messages(); track msg.id){
+        <div class="space-y-1">
+
+            <!-- User info -->
+            <div class="flex items-center gap-2">
+                <span class="text-[12px] font-bold text-[#bfc7d3]">
+                    {{ msg.user_profile?.nombre || 'Usuario' }}
+                </span>
+
+                <span class="text-[10px] text-[#8b909f]">
+                    {{ msg.created_at | date : 'dd/MM/yyyy HH:mm:ss' }}
+                </span>
+            </div>
+
+            <!-- Message bubble -->
+            <div class="bg-[#32353c] p-3 rounded-[0.5rem] rounded-tl-none border border-[#414754]">
+                <p class="text-[14px] text-[#e0e2ec]">
+                    {{ msg.message }}
+                </p>
+            </div>
+
+        </div>}
+
+    </div>
+
+
+    <!-- Input -->
+    <div class="p-[1.5rem] bg-[#1d2027] border-t border-[#414754]">
+
+        <div class="relative">
+
+            <input
+                #msgInput
+                type="text"
+                class="w-full bg-[#0b0e15] border border-[#414754] rounded-[0.5rem] py-3 px-4 pr-12 text-[14px] text-[#e0e2ec] focus:outline-none focus:border-[#acc7ff]"
+                placeholder="Type a message..."
+                (keydown.enter)="send(msgInput)"
+            />
+
+            <button
+                (click)="send(msgInput)"
+                class="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-[#acc7ff] hover:text-white"
+            >
+                <span class="material-symbols-outlined text-[24px]">send</span>
+            </button>
+
+        </div>
+
+    </div>
+
+</aside>
