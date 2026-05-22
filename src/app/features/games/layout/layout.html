@@ -1,0 +1,10 @@
+<div >
+  <router-outlet />
+@if (!mostrarChat) {
+  <div class="fixed p-4 bg-blue-900 z-[1000] bottom-4 right-4" (click)="toggleChat()">CHAT</div>}
+
+ 
+  @if (mostrarChat) {
+    <app-global-chat (close)="toggleChat()" />
+}
+</div>

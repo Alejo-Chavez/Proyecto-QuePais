@@ -1,0 +1,95 @@
+<div class="pt-16">
+    <main
+        class="min-h-screen bg-[url('/assets/backgrounds/screen2.png')] opacity-95  font-sans flex flex-col items-center justify-center p-6 relative overflow-hidden">
+    @if (!playing()) {
+        <div class="fixed inset-0 z-50 flex items-center justify-center bg-[#10131a]/80 backdrop-blur-sm">
+            <button (click)="startGame()"
+                class="bg-[#acc7ff] hover:brightness-110 text-[#002f68] px-16 py-6 rounded-[1.25rem] text-[28px] font-bold uppercase tracking-widest transition-all active:scale-95 shadow-2xl shadow-[#acc7ff]/20">
+                Start Game
+            </button>
+        </div>
+    }
+        <div class="absolute inset-0 opacity-30 pointer-events-none"
+            style="background-image: linear-gradient(to right, #1d2027 1px, transparent 1px), linear-gradient(to bottom, #1d2027 1px, transparent 1px); background-size: 40px 40px;">
+        </div>
+        <div class="absolute inset-0 pointer-events-none">
+        </div>
+         <div class="relative z-10 w-full max-w-md flex mb-12 gap-4 items-center">
+            <div
+                class="flex-1 bg-[#1d2027] border border-[#414754] p-4 rounded-[0.75rem] flex flex-col items-center shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]">
+                <span class="text-[12px] font-medium text-[#c1c6d6] uppercase tracking-[0.02em] mb-1">Racha
+                    Actual</span>
+                <span class="text-[32px] text-[#acc7ff] font-bold">{{ score() }}</span>
+            </div>
+            <div
+                class="w-16 h-20 bg-[#1d2027] border border-[#414754] rounded-[0.75rem] flex flex-col items-center justify-center shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]">
+                <svg class="size-6 text-red-400 fill-red-400" viewBox="0 0 24 24">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+                <span class="text-[16px] text-red-400 font-bold">{{ lives() }}</span>
+            </div>
+            <div
+                class="flex-1 bg-[#1d2027] border border-[#414754] p-4 rounded-[0.75rem] flex flex-col items-center shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]">
+                <span class="text-[12px] font-medium text-[#c1c6d6] uppercase tracking-[0.02em] mb-1">Record
+                    Personal</span>
+                <span class="text-[32px] text-[#bfc7d3] font-bold">{{ bestScore() }}</span>
+            </div>
+        </div>
+        <div class="mb-8 relative z-10 flex max-sm:gap-2 gap-6 items-center justify-center lg:mb-16">
+            <div
+                class="max-sm:w-24 max-sm:h-36 w-48 h-72 border-2 border-dashed border-[#414754] rounded-[0.75rem] flex items-center justify-center overflow-hidden relative">
+                <img src="/assets/cards/Back-B.png" class="absolute inset-0 w-full h-full object-contain" />
+                @if (currentCard()) {
+                <img [src]="currentCard()!.image" class="absolute inset-0 w-full h-full object-contain" />
+                }
+            </div>
+            <button (click)="playerSelect('igual')" [disabled]="evaluating()"
+                class="hover:cursor-pointer max-sm:size-10 size-14 rounded-full border-2 border-[#8b909f] hover:bg-[#32353c]  flex items-center justify-center transition-all active:scale-90 flex-shrink-0 font-bold max-sm:text-base text-xl disabled:opacity-40 disabled:cursor-not-allowed">
+                =
+            </button>
+            <div
+                class="max-sm:w-24 max-sm:h-36 w-48 h-72 border-2 border-dashed border-[#414754] rounded-[0.75rem] flex items-center justify-center overflow-hidden relative">
+                @if (rightRevealed() && nextCard()) {
+                <img [src]="nextCard()!.image" class="absolute inset-0 w-full h-full object-contain" />
+                } @else {
+                <img src="/assets/cards/Back-B.png" class="absolute inset-0 w-full h-full object-contain" />
+                }
+            </div>
+        </div>
+        <div class="relative z-10 flex flex-col sm:flex-row gap-6 w-full max-w-lg">
+            <button (click)="playerSelect('mayor')" [disabled]="evaluating()"
+                class="hover:cursor-pointer flex-1 bg-[#acc7ff] hover:brightness-110 text-[#002f68] h-16 rounded-[0.75rem] flex items-center justify-center gap-3 transition-all active:scale-95 group shadow-lg disabled:opacity-40 disabled:cursor-not-allowed">
+                <span class="material-symbols-outlined group-hover:-translate-y-1 transition-transform"><svg
+                        class="size-5 rotate-90 font-extralight" fill="#000000" viewBox="0 0 1920 1920"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <g fill-rule="evenodd">
+                            <path
+                                d="M1052 92.168 959.701 0-.234 959.935 959.701 1920l92.299-92.43-867.636-867.635L1052 92.168Z" />
+                            <path
+                                d="M1920 92.168 1827.7 0 867.766 959.935 1827.7 1920l92.3-92.43-867.64-867.635L1920 92.168Z" />
+                        </g>
+                    </svg></span>
+                <span class="text-[24px] font-semibold uppercase tracking-wider">Mayor</span>
+            </button>
+            <button (click)="playerSelect('menor')" [disabled]="evaluating()"
+                class="hover:cursor-pointer flex-1 border border-[#8b909f] hover:bg-[#32353c]  h-16 rounded-[0.75rem] flex items-center justify-center gap-3 transition-all active:scale-95 group disabled:opacity-40 disabled:cursor-not-allowed">
+                <span class="material-symbols-outlined group-hover:translate-y-1.5 transition-transform"><svg
+                        class="size-5 rotate-90" fill="#ffff" viewBox="0 0 1920 1920"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <g fill-rule="evenodd">
+                            <path
+                                d="M0 92.168 92.299 0l959.931 959.935L92.299 1920 0 1827.57l867.636-867.635L0 92.168Z" />
+                            <path
+                                d="M868 92.168 960.299 0l959.931 959.935L960.299 1920 868 1827.57l867.64-867.635L868 92.168Z" />
+                        </g>
+                    </svg></span>
+                <span class="text-[24px] font-semibold uppercase tracking-wider">Menor</span>
+            </button>
+        </div>
+        <div class="relative z-10 mt-12 text-center">
+            <p class="text-[14px] text-[#8b909f] flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-[16px]">Todos los derechos reservados deaaaaaa</span>
+            </p>
+        </div>
+    </main>
+</div>
