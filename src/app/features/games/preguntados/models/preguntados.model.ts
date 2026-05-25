@@ -12,4 +12,5 @@ export interface Pregunta {
   pregunta: string;
   opciones: string[];
   respuesta: string;
+  categoria?: string;
 }
