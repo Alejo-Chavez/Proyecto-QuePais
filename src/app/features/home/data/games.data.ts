@@ -15,7 +15,7 @@ export const GAMES: Game[] = [
   {
     title: 'Preguntados',
     description: 'Pone a prueba tu conocimiento general',
-    route: '/home',
+    route: '/games/preguntados',
     icon: '/assets/games-pp/preguntados.png'
   },
   {

@@ -1,0 +1,13 @@
+@if(preguntas()) {
+
+  @for(categoria of preguntas()!.categorias; track categoria.nombre) {
+
+    <h2>{{ categoria.nombre }}</h2>
+
+    @for(question of categoria.preguntas; track question.id) {
+      <p>{{ question.pregunta }}</p>
+    }
+
+  }
+
+}
