@@ -146,6 +146,7 @@ export class Preguntados implements OnInit, OnDestroy {
 
     if (opcion === correct) {
       this.score.update(s => s + Math.round(50 * this.multiplier()));
+      this.updateBestScore();
       this.correctAnswers.update(c => c + 1);
     } else {
       this.lives.update(l => l - 1);

@@ -12,8 +12,9 @@ export const routes: Routes = [
       { path: 'games', component: Layout, canActivate: [authGuard],children: [
                   { path: 'ahorcado', loadComponent: () =>import('./features/games/ahorcado/ahorcado').then((m) => m.Ahorcado)},
                   { path: 'mayor-o-menor', loadComponent: () => import('./features/games/mayor-o-menor/mayor-o-menor').then((m) => m.MayorOMenor)},
-                  {path: 'preguntados', loadComponent: () =>import('./features/games/preguntados/preguntados').then((m) => m.Preguntados)}
-               ]},
+                  {path: 'preguntados', loadComponent: () =>import('./features/games/preguntados/preguntados').then((m) => m.Preguntados)},
+                  {path: 'sudoku', loadComponent: () =>import('./features/games/sudoku/sudoku').then((m) => m.Sudoku)}
+                ]},
      { path: 'login', component: Login },
      { path: 'register', component: Register },
      { path: 'who-iam', component: WhoIam }
