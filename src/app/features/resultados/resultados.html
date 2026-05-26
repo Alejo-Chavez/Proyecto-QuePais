@@ -1,13 +1,13 @@
-<section class="pt-16 min-h-dvh bg-[#10131a]">
-  <div class="max-w-[960px] mx-auto px-4 py-8">
+<section class="pt-16 min-h-dvh bg-[url(/assets/bg-imgs/resultados.png)]">
+  <div class="w-full max-w-[1200px] mx-auto px-6 py-16 bg-[rgba(16,19,26,0.8)] backdrop-blur-md">
     <h2 class="text-center text-2xl font-bold text-[#acc7ff] mb-8">
       <i class="fas fa-trophy mr-2"></i> Resultados
     </h2>
 
-    <div class="flex gap-2 mb-6 overflow-x-auto flex-wrap">
+    <div class="flex mb-6 overflow-x-auto flex-wrap justify-center gap-4">
       @for (juego of juegos(); track juego.key; let i = $index) {
         <button
-          class="flex items-center gap-2 px-4 py-2 text-sm font-bold uppercase rounded-lg whitespace-nowrap transition-all"
+          class="flex items-center gap-2 p-4 text-sm font-bold uppercase rounded-lg whitespace-nowrap transition-all hover:cursor-pointer"
           [ngClass]="activeTab() === i ? 'bg-[#acc7ff] text-[#001a40]' : 'bg-[#272a31] text-[#8b909f] hover:bg-[#32353c]'"
           (click)="activeTab.set(i)"
         >
@@ -27,12 +27,12 @@
         <table class="w-full text-left border-collapse">
           <thead>
             <tr class="border-b border-[#414754]">
-              <th class="px-5 py-3 text-xs text-[#8b909f] uppercase tracking-widest">Jugador</th>
-              <th class="px-5 py-3 text-xs text-[#8b909f] uppercase tracking-widest text-right">Puntaje</th>
+              <th class="px-5 py-3 text-xs text-[#8b909f] uppercase tracking-widest text-center">Jugador</th>
+              <th class="px-5 py-3 text-xs text-[#8b909f] uppercase tracking-widest text-center">Puntaje</th>
               @for (col of juegoActual().columnas; track col.key) {
-                <th class="px-5 py-3 text-xs text-[#8b909f] uppercase tracking-widest text-right">{{ col.label }}</th>
+                <th class="px-5 py-3 text-xs text-[#8b909f] uppercase tracking-widest text-center">{{ col.label }}</th>
               }
-              <th class="px-5 py-3 text-xs text-[#8b909f] uppercase tracking-widest text-right">Fecha</th>
+              <th class="px-5 py-3 text-xs text-[#8b909f] uppercase tracking-widest text-center">Fecha</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-[#414754]">
@@ -45,14 +45,14 @@
             }
             @for (row of juegoActual().filas; track row.id) {
               <tr class="hover:bg-[#32353c] transition-colors">
-                    <td class="px-5 py-4 font-semibold text-[#e0e2ec]">{{ row.user_profile?.nombre ?? row.user_id.slice(0, 8) }}</td>
-                <td class="px-5 py-4 text-right font-bold text-[#e0e2ec]">{{ row.puntaje_total.toLocaleString('es-ES') }}</td>
+                    <td class="px-5 py-4 font-semibold text-[#e0e2ec] text-center">{{ row.user_profile?.nombre ?? row.user_id.slice(0, 8) }}</td>
+                <td class="px-5 py-4 font-bold text-[#e0e2ec] text-center">{{ row.puntaje_total.toLocaleString('es-ES') }}</td>
                 @for (col of juegoActual().columnas; track col.key) {
-                  <td class="px-5 py-4 text-right text-[#c1c6d6]">
+                  <td class="px-5 py-4  text-[#c1c6d6] text-center">
                     {{ col.render ? col.render(getValor(row, col.key)) : getValor(row, col.key) }}
                   </td>
                 }
-                <td class="px-5 py-4 text-right text-sm text-[#8b909f]">{{ formatDate(row.created_at) }}</td>
+                <td class="px-5 py-4  text-sm text-[#8b909f] text-center">{{ formatDate(row.created_at) }}</td>
               </tr>
             }
           </tbody>

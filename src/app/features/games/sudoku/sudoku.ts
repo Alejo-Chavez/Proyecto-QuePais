@@ -2,6 +2,7 @@ import { Component, signal, computed, inject, HostListener } from '@angular/core
 import { SudokuService } from './services/sudoku.service';
 import { ResultadosService } from '../../../core/services/resultados.service';
 import { Sound } from '../../../core/services/sounds.service';
+import { GameActionBtn } from '../../../shared/components/game-action-btn/game-action-btn';
 
 interface DifficultyConfig {
   label: string;
@@ -22,7 +23,7 @@ type Screen = 'menu' | 'difficulty' | 'playing' | 'victory' | 'gameover';
 
 @Component({
   selector: 'app-sudoku',
-  imports: [],
+  imports: [GameActionBtn],
   templateUrl: './sudoku.html',
 })
 export class Sudoku {
@@ -101,7 +102,12 @@ export class Sudoku {
     if (!sel) return;
     this.sound.playSfx('pressKey');
     const [row, col] = sel;
+    const prevLives = this.service.lives();
     this.service.setValue(row, col, n);
+
+    if (this.service.lives() < prevLives) {
+      this.sound.playSfx('error2');
+    }
 
     if (this.service.lives() <= 0 && this.service.gameFinished()) {
       this.stopTimer();
@@ -121,7 +127,7 @@ export class Sudoku {
 
   isSelected(row: number, col: number): boolean {
     const sel = this.selectedCell();
-    return sel !== null && sel[0] === row && sel[1] === col;
+    return sel !== null && sel[0] === row && sel[1] === col; // para pintar desp la celda clickeada
   }
 
   isHighlighted(row: number, col: number): boolean {
@@ -145,6 +151,7 @@ export class Sudoku {
     this.stopTimer();
 
     if (won) {
+      this.sound.playSfx('sudoku-gamepass');
       const diff = this.difficulty();
       const bonoTiempo = Math.max(0, (diff.timeLimit - this.elapsedTime()) / diff.timeLimit);
       const multVidas = 1 + this.service.lives() * 0.5;
@@ -165,11 +172,13 @@ export class Sudoku {
 
       this.screen.set('victory');
     } else {
+      this.sound.playSfx('sudoku-gameover');
       this.screen.set('gameover');
     }
   }
 
   private async gameOver() {
+    this.sound.playSfx('sudoku-gameover');
     this.stopTimer();
     this.selectedCell.set(null);
     this.screen.set('gameover');
