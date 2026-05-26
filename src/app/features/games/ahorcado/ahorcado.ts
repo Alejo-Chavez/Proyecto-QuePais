@@ -1,6 +1,7 @@
 import { Component, signal, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Sound } from '../../../core/services/sounds.service';
+import { ResultadosService } from '../../../core/services/resultados.service';
 
 /*
   ── Tabla game_results (crear en Supabase SQL Editor) ──
@@ -23,6 +24,7 @@ import { Sound } from '../../../core/services/sounds.service';
 export class Ahorcado implements OnDestroy {
 
   sound = inject(Sound);
+  private resultados = inject(ResultadosService);
 
   //estado del juego
   isPlaying = signal(false);
@@ -214,7 +216,7 @@ export class Ahorcado implements OnDestroy {
   }
 
   //finalizar el juego
-  gameOver() {
+  async gameOver() {
 
     this.isPlaying.set(false);
 
@@ -229,27 +231,11 @@ export class Ahorcado implements OnDestroy {
 
     }
 
-    // ── guardar resultado en la BD (descomentar cuando exista la tabla) ──
-    // requiere:
-    //   import { SupabaseService } from '../../../core/services/supabase.service';
-    //   import { AuthServices } from '../../../core/services/auth.service';
-    //   private supabase = inject(SupabaseService);
-    //   private auth = inject(AuthServices);
-    //
-    // const elapsed = Math.floor((Date.now() - this.startTime) / 1000);
-    // const user = this.auth.currentUser();
-    // if (user) {
-    //   await this.supabase.getClient().from('game_results').insert({
-    //     user_id: user.id,
-    //     game_name: 'ahorcado',
-    //     score: this.score(),
-    //     details: {
-    //       tiempo_segundos: elapsed,
-    //       vidas_restantes: this.lives(),
-    //       palabra: this.currentWord.word
-    //     }
-    //   });
-    // }
+    const elapsed = Math.floor((Date.now() - this.startTime) / 1000);
+    await this.resultados.guardar('ahorcado', this.score(), {
+      letras_seleccionadas: this.usedLetters.length,
+      tiempo_segundos: elapsed
+    });
 
   }
 

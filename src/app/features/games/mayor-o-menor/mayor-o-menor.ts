@@ -1,6 +1,7 @@
 import { Component, signal, inject } from '@angular/core';
 import { Card } from './models/cards.model';
 import { Sound } from '../../../core/services/sounds.service';
+import { ResultadosService } from '../../../core/services/resultados.service';
 
 /*
   ── Tabla game_results (crear en Supabase SQL Editor) ──
@@ -22,6 +23,7 @@ import { Sound } from '../../../core/services/sounds.service';
 
 export class MayorOMenor {
   sound = inject(Sound);
+  private resultados = inject(ResultadosService);
 
   private pointsMap = {
     mayor: 50,
@@ -40,6 +42,7 @@ export class MayorOMenor {
   evaluating = signal(false);
   suits = ["spades", "hearts", "clubs", "diamonds"]
   cartasAcertadas = 0;
+  rondas = signal(0);
 
   startGame() {
     this.playing.set(true);
@@ -47,6 +50,7 @@ export class MayorOMenor {
     this.score.set(0);
     this.lives.set(5);
     this.cartasAcertadas = 0;
+    this.rondas.set(0);
     this.generateDeck();
     this.shuffleDeck();
     this.currentCard.set(this.drawCard());
@@ -84,7 +88,7 @@ export class MayorOMenor {
     return card; //la retorno
   }
 
-  playerSelect(option: 'mayor' | 'menor' | 'igual') {
+  async playerSelect(option: 'mayor' | 'menor' | 'igual') {
     if (this.evaluating()) return;
 
     const current = this.currentCard();
@@ -93,6 +97,7 @@ export class MayorOMenor {
 
     this.rightRevealed.set(true);
     this.evaluating.set(true);
+    this.rondas.update(n => n + 1);
     this.sound.playSfx('taking-card');
 
     const isCorrect =
@@ -111,22 +116,10 @@ export class MayorOMenor {
     }
 
     if (this.lives() <= 0) {
-      // ── guardar resultado en la BD (descomentar cuando exista la tabla) ──
-      // requiere:
-      //   import { SupabaseService } from '../../../core/services/supabase.service';
-      //   import { AuthServices } from '../../../core/services/auth.service';
-      //   private supabase = inject(SupabaseService);
-      //   private auth = inject(AuthServices);
-      //
-      // const user = this.auth.currentUser();
-      // if (user) {
-      //   await this.supabase.getClient().from('game_results').insert({
-      //     user_id: user.id,
-      //     game_name: 'mayor-o-menor',
-      //     score: this.score(),
-      //     details: { cartas_acertadas: this.cartasAcertadas }
-      //   });
-      // }
+      await this.resultados.guardar('mayor-o-menor', this.score(), {
+        cartas_acertadas: this.cartasAcertadas,
+        rondas: this.rondas()
+      });
 
       setTimeout(() => {
         this.sound.stopMusic();

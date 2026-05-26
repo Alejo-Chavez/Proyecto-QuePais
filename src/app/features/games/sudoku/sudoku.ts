@@ -1,5 +1,6 @@
 import { Component, signal, computed, inject, HostListener } from '@angular/core';
 import { SudokuService } from './services/sudoku.service';
+import { ResultadosService } from '../../../core/services/resultados.service';
 
 interface DifficultyConfig {
   label: string;
@@ -25,6 +26,7 @@ type Screen = 'menu' | 'difficulty' | 'playing' | 'victory' | 'gameover';
 })
 export class Sudoku {
   service = inject(SudokuService);
+  private resultados = inject(ResultadosService);
   difficultyConfigs = DIFFICULTIES;
   readonly numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -134,7 +136,7 @@ export class Sudoku {
     return this.service.board()[row]?.[col] !== 0;
   }
 
-  verifySolution() {
+  async verifySolution() {
     const won = this.service.verifySolution();
     this.service.finishGame(won);
     this.stopTimer();
@@ -153,16 +155,25 @@ export class Sudoku {
         localStorage.setItem('best-scores-sudoku', JSON.stringify(scores));
       }
 
+      await this.resultados.guardar('sudoku', total, {
+        dificultad: this.difficulty().key,
+        tiempo_segundos: this.elapsedTime()
+      });
+
       this.screen.set('victory');
     } else {
       this.screen.set('gameover');
     }
   }
 
-  private gameOver() {
+  private async gameOver() {
     this.stopTimer();
     this.selectedCell.set(null);
     this.screen.set('gameover');
+    await this.resultados.guardar('sudoku', 0, {
+      dificultad: this.difficulty().key,
+      tiempo_segundos: this.elapsedTime()
+    });
   }
 
   goHome() {

@@ -2,6 +2,7 @@ import { Component, signal, computed, inject, OnInit, OnDestroy } from '@angular
 import { NgClass } from '@angular/common';
 import { Pregunta } from './models/preguntados.model';
 import { Preguntas } from './services/preguntas.service';
+import { ResultadosService } from '../../../core/services/resultados.service';
 
 @Component({
   selector: 'app-preguntados',
@@ -10,6 +11,7 @@ import { Preguntas } from './services/preguntas.service';
 })
 export class Preguntados implements OnInit, OnDestroy {
   private questionService = inject(Preguntas);
+  private resultados = inject(ResultadosService);
 
   isPlaying = signal(false);
   lives = signal(3);
@@ -92,6 +94,9 @@ export class Preguntados implements OnInit, OnDestroy {
         this.isVictory.set(true);
         this.isPlaying.set(false);
         this.updateBestScore();
+        this.resultados.guardar('preguntados', this.score(), {
+          preguntas_acertadas: this.correctAnswers()
+        });
         return;
       }
     }
@@ -161,10 +166,13 @@ export class Preguntados implements OnInit, OnDestroy {
     }, 1300);
   }
 
-  private gameOver() {
+  private async gameOver() {
     this.isPlaying.set(false);
     this.clearTimers();
     this.updateBestScore();
+    await this.resultados.guardar('preguntados', this.score(), {
+      preguntas_acertadas: this.correctAnswers()
+    });
   }
 
   private updateBestScore() {
