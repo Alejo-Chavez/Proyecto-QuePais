@@ -1,17 +1,15 @@
-<a routerLink="/resultados"
-   class="group fixed top-16 left-0 w-full z-50 flex items-center justify-center py-2 bg-gradient-to-r from-[#acc7ff]/10 via-[#acc7ff]/20 to-[#acc7ff]/10 backdrop-blur-xl border-b border-[#acc7ff]/30 transition-all duration-500 hover:border-[#acc7ff] hover:shadow-[0_0_25px_rgba(172,199,255,0.25)] active:scale-[0.99] overflow-hidden cursor-pointer">
-  <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-  <span class="relative text-sm font-bold tracking-[0.4em] text-[#acc7ff] uppercase group-hover:text-white transition-colors">
-    RANKING
-  </span>
-  <div class="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#acc7ff]/50 to-transparent"></div>
-</a>
-<div class="flex pt-16 relative justify-center min-h-dvh scale-100 bg-cover bg-center bg-no-repeat">
+<div class="flex flex-col pt-16 relative min-h-dvh scale-100 bg-cover bg-center bg-no-repeat">
 
-    <div class="absolute inset-0 bg-gray-800/35 " ></div>
-    <section class="flex-grow grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-full justify-end pt-8">
+    <div class="absolute inset-0 bg-gray-800/35"></div>
+    <a routerLink="/resultados"
+       class="relative z-10 flex items-center justify-center w-full py-2 bg-gradient-to-r from-[#acc7ff]/10 via-[#acc7ff]/20 to-[#acc7ff]/10 backdrop-blur-xl border-b border-[#acc7ff]/30 transition-all duration-500 hover:border-[#acc7ff] hover:shadow-[0_0_25px_rgba(172,199,255,0.25)] active:scale-[0.99] overflow-hidden cursor-pointer">
+      <span class="text-sm font-bold tracking-[0.4em] text-[#acc7ff] uppercase hover:text-white transition-colors">
+        RANKING
+      </span>
+    </a>
+    <section class="flex-grow grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-full pt-8">
         @for (game of games; track game.title) {
-        <a class="group relative overflow-hidden h-auto lg:min-h-[calc(100dvh-4rem)] bg-[#1d2027]/40 backdrop-blur cursor-pointer"
+        <a class="group relative overflow-hidden h-auto lg:min-h-[calc(100dvh-9rem)] bg-[#1d2027]/40 backdrop-blur cursor-pointer"
             (click)="goToGame(game.route)" (mouseenter)="playHover()" (click)="playSelect()">
 
             <!-- DESKTOP: img de bg -->

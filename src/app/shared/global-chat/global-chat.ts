@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Output, inject, ViewChild, ElementRef, effect } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { ChatService } from '../../core/services/chat.service';
+import { AuthServices } from '../../core/services/auth.service';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -10,13 +11,25 @@ import { DatePipe } from '@angular/common';
 })
 export class GlobalChat implements OnInit {
   private chatService = inject(ChatService);
+  auth = inject(AuthServices);
 
   @Output() close = new EventEmitter<void>();
 
   messages = this.chatService.messages;
 
-  ngOnInit(): void {
-    this.chatService.getMessages();
+  @ViewChild('msgContainer') private msgContainer!: ElementRef<HTMLElement>;
+
+  constructor() {
+    effect(() => {
+      this.messages();
+      setTimeout(() => {
+        this.msgContainer?.nativeElement.scrollTo({ top: this.msgContainer.nativeElement.scrollHeight, behavior: 'smooth' });
+      });
+    });
+  }
+
+  async ngOnInit(): Promise<void> {
+    await this.chatService.getMessages();
     this.chatService.listenMessagesInRealTime();
   }
 

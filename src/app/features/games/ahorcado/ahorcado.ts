@@ -197,6 +197,7 @@ export class Ahorcado implements OnDestroy {
   //mostrar las acertadas
 
   get maskedWord(): string[] {
+    if (!this.currentWord) return [];
 
     return this.currentWord.word
       .split('')

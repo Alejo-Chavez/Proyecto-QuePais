@@ -23,11 +23,5 @@ export const GAMES: Game[] = [
     description: 'Clásico Sudoku con 4 niveles de dificultad',
     route: '/games/sudoku',
     icon: '/assets/games-pp/sudoku.png'
-  },
-  {
-    title: 'Qué país',
-    description: 'Adivina el país por sus características',
-    route: '/home',
-    icon: '/assets/games-pp/sudoku.png'
   }
 ];
