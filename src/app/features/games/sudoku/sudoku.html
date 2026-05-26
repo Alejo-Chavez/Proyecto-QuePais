@@ -123,23 +123,22 @@
         </div>
       </div>
 
-      <div class="relative z-10 mt-4 grid grid-cols-5 gap-2 max-w-xs mx-auto">
-        @for (n of numbers; track n) {
-          <button (click)="enterNumber(n)"
-            class="w-12 h-12 flex flex-col items-center justify-center bg-[#1d2027] border border-[#414754] hover:border-[#acc7ff]/50 rounded-xl transition-all active:scale-90 hover:bg-[#acc7ff]/10">
-            <span class="text-lg font-bold text-[#acc7ff] leading-none">{{ n }}</span>
-            <span class="text-[9px] text-[#8b909f] leading-none mt-0.5">{{ remainingCount(n) }}</span>
+      <div class="relative z-10 mt-4 flex items-start justify-center gap-4">
+        <div class="grid grid-cols-5 gap-2 max-w-xs">
+          @for (n of numbers; track n) {
+            <button (click)="enterNumber(n)"
+              class="w-12 h-12 flex flex-col items-center justify-center bg-[#1d2027] border border-[#414754] hover:border-[#acc7ff]/50 rounded-xl transition-all active:scale-90 hover:bg-[#acc7ff]/10">
+              <span class="text-lg font-bold text-[#acc7ff] leading-none">{{ n }}</span>
+              <span class="text-[9px] text-[#8b909f] leading-none mt-0.5">{{ remainingCount(n) }}</span>
+            </button>
+          }
+          <button (click)="eraseNumber()"
+            class="w-12 h-12 bg-[#1d2027] border border-[#414754] hover:border-red-400/50 rounded-xl text-lg font-bold text-red-400 transition-all active:scale-90 hover:bg-red-900/20 col-start-5">
+            🗑
           </button>
-        }
-        <button (click)="eraseNumber()"
-          class="w-12 h-12 bg-[#1d2027] border border-[#414754] hover:border-red-400/50 rounded-xl text-lg font-bold text-red-400 transition-all active:scale-90 hover:bg-red-900/20 col-start-5">
-          🗑
-        </button>
-      </div>
-
-      <div class="relative z-10 mt-4 flex gap-3">
+        </div>
         <button (click)="verifySolution()"
-          class="bg-[#acc7ff] hover:brightness-110 text-[#002f68] px-6 py-3 rounded-xl text-sm font-bold uppercase tracking-wider transition-all active:scale-95">
+          class="self-center bg-[#acc7ff] hover:brightness-110 text-[#002f68] px-6 py-3 rounded-xl text-sm font-bold uppercase tracking-wider transition-all active:scale-95">
           VERIFICAR
         </button>
       </div>
