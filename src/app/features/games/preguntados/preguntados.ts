@@ -3,6 +3,7 @@ import { NgClass } from '@angular/common';
 import { Pregunta } from './models/preguntados.model';
 import { Preguntas } from './services/preguntas.service';
 import { ResultadosService } from '../../../core/services/resultados.service';
+import { Sound } from '../../../core/services/sounds.service';
 
 @Component({
   selector: 'app-preguntados',
@@ -12,6 +13,7 @@ import { ResultadosService } from '../../../core/services/resultados.service';
 export class Preguntados implements OnInit, OnDestroy {
   private questionService = inject(Preguntas);
   private resultados = inject(ResultadosService);
+  private sound = inject(Sound);
 
   isPlaying = signal(false);
   lives = signal(3);
@@ -129,6 +131,7 @@ export class Preguntados implements OnInit, OnDestroy {
   private handleTimeout() {
     this.showFeedback.set(true);
     this.correctAnswerText.set(this.currentQuestion()?.respuesta ?? null);
+    this.sound.playSfx('error2');
     this.lives.update(l => l - 1);
 
     this.feedbackTimer = setTimeout(() => {
@@ -150,10 +153,12 @@ export class Preguntados implements OnInit, OnDestroy {
     this.correctAnswerText.set(correct);
 
     if (opcion === correct) {
+      this.sound.playSfx('correct2');
       this.score.update(s => s + Math.round(50 * this.multiplier()));
       this.updateBestScore();
       this.correctAnswers.update(c => c + 1);
     } else {
+      this.sound.playSfx('error2');
       this.lives.update(l => l - 1);
     }
 

@@ -1,6 +1,7 @@
 import { Component, signal, computed, inject, HostListener } from '@angular/core';
 import { SudokuService } from './services/sudoku.service';
 import { ResultadosService } from '../../../core/services/resultados.service';
+import { Sound } from '../../../core/services/sounds.service';
 
 interface DifficultyConfig {
   label: string;
@@ -27,6 +28,7 @@ type Screen = 'menu' | 'difficulty' | 'playing' | 'victory' | 'gameover';
 export class Sudoku {
   service = inject(SudokuService);
   private resultados = inject(ResultadosService);
+  private sound = inject(Sound);
   difficultyConfigs = DIFFICULTIES;
   readonly numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -97,6 +99,7 @@ export class Sudoku {
   enterNumber(n: number) {
     const sel = this.selectedCell();
     if (!sel) return;
+    this.sound.playSfx('pressKey');
     const [row, col] = sel;
     this.service.setValue(row, col, n);
 
