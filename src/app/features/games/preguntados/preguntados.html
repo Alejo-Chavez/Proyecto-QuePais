@@ -1,0 +1,108 @@
+<div class="pt-16">
+  @if (!isPlaying()) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-[#10131a]/80 backdrop-blur-sm">
+      @if (isVictory()) {
+        <div class="flex flex-col items-center gap-6">
+          <div class="text-center">
+            <h2 class="text-4xl font-bold text-yellow-400 mb-2">VICTORIA</h2>
+            <p class="text-[#c1c6d6] text-lg">Completaste todas las fases</p>
+          </div>
+          <div class="bg-[#1d2027] border border-[#414754] rounded-xl p-6 text-center">
+            <span class="text-sm text-[#8b909f] uppercase tracking-wider">Puntaje Final</span>
+            <p class="text-4xl font-bold text-[#acc7ff] mt-1">{{ score() }}</p>
+          </div>
+          <button (click)="startGame()"
+            class="bg-[#acc7ff] hover:brightness-110 text-[#002f68] px-16 py-5 rounded-[1.25rem] text-2xl font-bold uppercase tracking-widest transition-all active:scale-95 shadow-2xl shadow-[#acc7ff]/20">
+            JUGAR DE NUEVO
+          </button>
+        </div>
+      } @else if (score() > 0) {
+        <div class="flex flex-col items-center gap-6">
+          <div class="text-center">
+            <h2 class="text-3xl font-bold text-red-400 mb-2">GAME OVER</h2>
+            <p class="text-[#c1c6d6] text-lg">Puntaje: {{ score() }}</p>
+            <p class="text-[#8b909f] text-sm mt-1">Mejor: {{ bestScore() }}</p>
+          </div>
+          <button (click)="startGame()"
+            class="bg-[#acc7ff] hover:brightness-110 text-[#002f68] px-16 py-5 rounded-[1.25rem] text-2xl font-bold uppercase tracking-widest transition-all active:scale-95 shadow-2xl shadow-[#acc7ff]/20">
+            JUGAR
+          </button>
+        </div>
+      } @else {
+        <button (click)="startGame()"
+          class="bg-[#acc7ff] hover:brightness-110 text-[#002f68] px-16 py-5 rounded-[1.25rem] text-2xl font-bold uppercase tracking-widest transition-all active:scale-95 shadow-2xl shadow-[#acc7ff]/20">
+          JUGAR
+        </button>
+      }
+    </div>
+  }
+
+  <main class="min-h-screen bg-[url('/assets/backgrounds/screen2.png')] opacity-95 flex flex-col items-center px-4 py-4 relative">
+    <div class="absolute inset-0 opacity-30 pointer-events-none"
+      style="background-image: linear-gradient(to right, #1d2027 1px, transparent 1px), linear-gradient(to bottom, #1d2027 1px, transparent 1px); background-size: 40px 40px;">
+    </div>
+
+    <div class="relative z-10 w-full max-w-md flex items-center gap-2 mb-4">
+      <div class="flex-1 bg-[#1d2027] border border-[#414754] p-2.5 rounded-xl flex flex-col items-center shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]">
+        <span class="text-[10px] font-medium text-[#c1c6d6] uppercase tracking-wider">Puntaje</span>
+        <span class="text-xl font-bold text-[#498fff]">{{ score() }}</span>
+      </div>
+      <div class="w-14 h-16 bg-[#1d2027] border border-[#414754] rounded-xl flex flex-col items-center justify-center shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]">
+        <svg class="size-4 text-red-400 fill-red-400" viewBox="0 0 24 24">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+        <span class="text-sm text-red-400 font-bold">{{ lives() }}</span>
+      </div>
+      <div class="flex-1 bg-[#1d2027] border border-[#414754] p-2.5 rounded-xl flex flex-col items-center shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]">
+        <span class="text-[10px] font-medium text-[#c1c6d6] uppercase tracking-wider">Fase</span>
+        <span class="text-xl font-bold text-yellow-400">{{ phase() }}</span>
+      </div>
+      <div class="flex-1 bg-[#1d2027] border border-[#414754] p-2.5 rounded-xl flex flex-col items-center shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]">
+        <span class="text-[10px] font-medium text-[#c1c6d6] uppercase tracking-wider">Aciertos</span>
+        <span class="text-xl font-bold text-[#acc7ff]">{{ correctAnswers() }}</span>
+      </div>
+    </div>
+
+    @if (currentQuestion()?.categoria) {
+      <div class="relative z-10 text-center mb-2">
+        <span class="text-xs text-[#8b909f] uppercase tracking-wider">{{ currentQuestion()?.categoria }}</span>
+      </div>
+    }
+
+    <div class="relative z-10 flex justify-center mb-4">
+      <div class="w-16 h-16 rounded-full border-2 flex items-center justify-center text-2xl font-bold"
+        [ngClass]="timeLeft() <= 5 ? 'border-red-400 text-red-400' : 'border-[#acc7ff] text-[#acc7ff]'">
+        {{ timeLeft() }}
+      </div>
+    </div>
+
+    <div class="relative z-10 bg-[#1d2027] border border-[#414754] rounded-xl p-6 max-w-lg mx-auto mb-6 w-full">
+      <p class="text-lg text-white text-center leading-relaxed">{{ currentQuestion()?.pregunta }}</p>
+    </div>
+
+    <div class="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg mx-auto w-full">
+      @for (opcion of shuffledOptions(); track $index) {
+        <button (click)="selectAnswer(opcion)"
+          [disabled]="showFeedback()"
+          class="h-14 rounded-xl font-semibold text-sm sm:text-base transition-all active:scale-95"
+          [ngClass]="{
+            'bg-[#acc7ff] text-[#002f68] hover:brightness-110': !showFeedback(),
+            'bg-green-500 text-white': showFeedback() && opcion === correctAnswerText(),
+            'bg-red-500 text-white': showFeedback() && opcion === selectedAnswer() && opcion !== correctAnswerText(),
+            'bg-[#1d2027] border border-[#414754] text-[#8b909f]': showFeedback() && opcion !== correctAnswerText() && opcion !== selectedAnswer(),
+            'opacity-50 cursor-not-allowed': showFeedback()
+          }">
+          {{ opcion }}
+        </button>
+      }
+    </div>
+
+    <div class="relative z-10 text-center mt-6">
+      <span class="text-xs text-[#8b909f]">Multiplicador: x{{ multiplier() }}</span>
+    </div>
+
+    <div class="relative z-10 text-center mt-2">
+      <span class="text-xs text-[#8b909f]">Mejor puntaje: {{ bestScore() }}</span>
+    </div>
+  </main>
+</div>

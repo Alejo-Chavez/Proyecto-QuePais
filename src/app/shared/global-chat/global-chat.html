@@ -14,15 +14,19 @@
     </div>
 
     <!-- Messages -->
-    <div class="flex-1 overflow-y-auto p-[1.5rem] space-y-6">
+    <div #msgContainer class="flex-1 overflow-y-auto p-[1.5rem] space-y-6">
 
         <!-- REAL MESSAGES -->
         @for (msg of messages(); track msg.id){
+        @let isOwn = msg.user_id === auth.currentUser()?.id;
         <div class="space-y-1">
 
             <!-- User info -->
-            <div class="flex items-center gap-2">
-                <span class="text-[12px] font-bold text-[#bfc7d3]">
+            <div class="flex items-center gap-2"
+                 [class.flex-row-reverse]="isOwn">
+                <span class="text-[12px] font-bold"
+                      [class.text-[#bfc7d3]]="!isOwn"
+                      [class.text-[#acc7ff]]="isOwn">
                     {{ msg.user_profile?.nombre || 'Usuario' }}
                 </span>
 
@@ -32,7 +36,13 @@
             </div>
 
             <!-- Message bubble -->
-            <div class="bg-[#32353c] p-3 rounded-[0.5rem] rounded-tl-none border border-[#414754]">
+            <div class="p-3 rounded-[0.5rem] border"
+                 [class.bg-[#32353c]]="!isOwn"
+                 [class.border-[#414754]]="!isOwn"
+                 [class.rounded-tl-none]="!isOwn"
+                 [class.bg-[#acc7ff]/15]="isOwn"
+                 [class.border-[#acc7ff]/40]="isOwn"
+                 [class.rounded-tr-none]="isOwn">
                 <p class="text-[14px] text-[#e0e2ec]">
                     {{ msg.message }}
                 </p>

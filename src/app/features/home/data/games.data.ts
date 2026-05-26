@@ -15,13 +15,13 @@ export const GAMES: Game[] = [
   {
     title: 'Preguntados',
     description: 'Pone a prueba tu conocimiento general',
-    route: '/home',
+    route: '/games/preguntados',
     icon: '/assets/games-pp/preguntados.png'
   },
   {
-    title: 'Qué país',
-    description: 'Adivina el país por sus características',
-    route: '/home',
-    icon: '/assets/games-pp/que-pais.png'
+    title: 'Sudoku',
+    description: 'Clásico Sudoku con 4 niveles de dificultad',
+    route: '/games/sudoku',
+    icon: '/assets/games-pp/sudoku.png'
   }
 ];
