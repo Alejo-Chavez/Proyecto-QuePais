@@ -3,7 +3,7 @@ import { Home } from './features/home/home';
 import { Login } from './features/login/login';
 import { Register } from './features/register/register';
 import { WhoIam } from './features/who-iam/who-iam';
-import { authGuard } from './core/guards/auth.guard.ts';
+import { authGuard } from './core/guards/auth.guard';
 import { Layout } from './features/games/layout/layout';
 
 export const routes: Routes = [
@@ -15,7 +15,8 @@ export const routes: Routes = [
                   {path: 'preguntados', loadComponent: () =>import('./features/games/preguntados/preguntados').then((m) => m.Preguntados)},
                   {path: 'sudoku', loadComponent: () =>import('./features/games/sudoku/sudoku').then((m) => m.Sudoku)}
                 ]},
-     { path: 'login', component: Login },
+      { path: 'resultados', loadComponent: () => import('./features/resultados/resultados').then((m) => m.Resultados), canActivate: [authGuard] },
+      { path: 'login', component: Login },
      { path: 'register', component: Register },
      { path: 'who-iam', component: WhoIam }
 ];
