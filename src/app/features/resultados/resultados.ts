@@ -79,7 +79,7 @@ export class Resultados {
     const { data } = await this.supabase
       .getClient()
       .from('resultados')
-      .select('*');
+      .select('*, user_profile!inner(*)');
     this.resultados.set(data ?? []);
   }
 
