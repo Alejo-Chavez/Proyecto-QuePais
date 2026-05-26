@@ -4,10 +4,11 @@ import { Pregunta } from './models/preguntados.model';
 import { Preguntas } from './services/preguntas.service';
 import { ResultadosService } from '../../../core/services/resultados.service';
 import { Sound } from '../../../core/services/sounds.service';
+import { GameActionBtn } from '../../../shared/components/game-action-btn/game-action-btn';
 
 @Component({
   selector: 'app-preguntados',
-  imports: [NgClass],
+  imports: [NgClass, GameActionBtn],
   templateUrl: './preguntados.html'
 })
 export class Preguntados implements OnInit, OnDestroy {
@@ -40,7 +41,7 @@ export class Preguntados implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.clearTimers();
+    this.clearTimers(); // si salgo del componente y no lo destruyo el timer sigue (siguen actualizando las signals)
   }
 
   private clearTimers() {
@@ -50,7 +51,7 @@ export class Preguntados implements OnInit, OnDestroy {
 
   startGame() {
     const data = this.questionService.preguntas();
-    if (!data) return;
+    if (!data) return; // si no hay preguntas, no se juega
 
     this.isPlaying.set(true);
     this.lives.set(3);
@@ -62,14 +63,14 @@ export class Preguntados implements OnInit, OnDestroy {
     const flat: Pregunta[] = [];
     for (const cat of data.categorias) {
       for (const q of cat.preguntas) {
-        flat.push({ ...q, categoria: cat.nombre });
+        flat.push({ ...q, categoria: cat.nombre }); // doble for para convertir las preuguntas en un ARRAY PLANO
       }
     }
-    this.allQuestions = this.shuffle(flat);
-    this.takeNext25();
+    this.allQuestions = this.shuffle(flat); // mezclo todo el array de preguntas
+    this.takeNext25(); // agarro 25
   }
-
-  private shuffle<T>(array: T[]): T[] {
+  // misma logifa de mezclar que en el juego de mayor o menor
+  private shuffle<T>(array: T[]): T[] { // lo hago génerico para no tener que hacer 2 funciones luego
     const arr = [...array];
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -79,20 +80,20 @@ export class Preguntados implements OnInit, OnDestroy {
   }
 
   private takeNext25() {
-    const taken = this.allQuestions.slice(0, 25);
-    this.allQuestions = this.allQuestions.slice(25);
-    this.questionsQueue.set(taken);
+    const taken = this.allQuestions.slice(0, 25); // saca las primeras 25 preguntas del array y las guarda en taken.
+    this.allQuestions = this.allQuestions.slice(25); // reemplaza allQuestions con todas las que quedan (desde la posición 25 en adelante)
+    this.questionsQueue.set(taken); // mete las 25 cortadas en la cola de preguntas (questionsQueue)
     this.showNextQuestion();
   }
 
   showNextQuestion() {
-    if (this.questionsQueue().length === 0) {
-      if (this.phase() < 5) {
-        this.phase.update(p => p + 1);
-        this.takeNext25();
+    if (this.questionsQueue().length === 0) { // si no tengo preguntas para mostrar
+      if (this.phase() < 5) { 
+        this.phase.update(p => p + 1); // cambio de fase
+        this.takeNext25(); // retomo 25 más
         return;
-      } else {
-        this.score.update(s => s + 1000000);
+      } else { // si de casualidad no existen mas preguntas (se pasó el juego)
+        this.score.update(s => s + 1000000); // +1M de puntos
         this.isVictory.set(true);
         this.isPlaying.set(false);
         this.updateBestScore();
@@ -103,38 +104,38 @@ export class Preguntados implements OnInit, OnDestroy {
       }
     }
 
-    const q = this.questionsQueue()[0];
-    this.questionsQueue.update(queue => queue.slice(1));
-    this.currentQuestion.set(q);
-    this.shuffledOptions.set(this.shuffle([...q.opciones]));
-    this.timeLeft.set(15);
-    this.selectedAnswer.set(null);
-    this.showFeedback.set(false);
-    this.correctAnswerText.set(null);
+    const q = this.questionsQueue()[0]; // primer pregunta
+    this.questionsQueue.update(queue => queue.slice(1)); // la quita del array (asi no se repite)
+    this.currentQuestion.set(q); // pregunta actual
+    this.shuffledOptions.set(this.shuffle([...q.opciones])); // en este caso llamo a shuffle() para mezclar las OPCIONES de lugar (por defecto en el json la primera siempre es la correcta)
+    this.timeLeft.set(15); // seteo el contador
+    this.selectedAnswer.set(null); // - - -
+    this.showFeedback.set(false); //  - - -
+    this.correctAnswerText.set(null); // - - - todo esto limpia el estado de la respusta anterior
     this.startTimer();
   }
 
   private startTimer() {
-    this.clearTimers();
-    this.timer = setInterval(() => {
-      this.timeLeft.update(t => {
-        if (t <= 1) {
+    this.clearTimers(); // limpia x las dudas cualquier timer anterior
+    this.timer = setInterval(() => { // intervalo que se ejecuta cada 1s
+      this.timeLeft.update(t => { 
+        if (t <= 1) { // si llega a 1 o menos detiene el invervalo
           this.clearTimers();
-          this.handleTimeout();
-          return 0;
+          this.handleTimeout(); // ejecuta la logica de tiempo acabado
+          return 0; // contador en 0
         }
-        return t - 1;
+        return t - 1; // si no termina, baja en 1 al contador (15, 14, 13 ...)
       });
     }, 1000);
   }
 
   private handleTimeout() {
-    this.showFeedback.set(true);
-    this.correctAnswerText.set(this.currentQuestion()?.respuesta ?? null);
+    this.showFeedback.set(true); // muestra los colores
+    this.correctAnswerText.set(this.currentQuestion()?.respuesta ?? null); // guarda la correcta para pintarla de verde
     this.sound.playSfx('error2');
-    this.lives.update(l => l - 1);
+    this.lives.update(l => l - 1); // como la llaman si se acaba el tiempo resta una vida
 
-    this.feedbackTimer = setTimeout(() => {
+    this.feedbackTimer = setTimeout(() => { 
       if (this.lives() <= 0) {
         this.gameOver();
       } else {
@@ -162,11 +163,11 @@ export class Preguntados implements OnInit, OnDestroy {
       this.lives.update(l => l - 1);
     }
 
-    this.feedbackTimer = setTimeout(() => {
+    this.feedbackTimer = setTimeout(() => { // espera 1.3s y luego decide
       if (this.lives() <= 0) {
-        this.gameOver();
+        this.gameOver(); // si lives = 0 termina el juego
       } else {
-        this.showNextQuestion();
+        this.showNextQuestion(); // sino, sigue el juego
       }
     }, 1300);
   }

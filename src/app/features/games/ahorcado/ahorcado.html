@@ -2,12 +2,10 @@
 <div class="pt-16">
   @if(!isPlaying()) {
     <div class="fixed inset-0 z-50 flex items-center justify-center bg-[#10131a]/80 backdrop-blur-sm">
-      <button
-        (click)="startGame()"
-        class="bg-[#acc7ff] hover:brightness-110 text-[#002f68] px-16 py-5 rounded-[1.25rem] text-2xl font-bold uppercase tracking-widest transition-all active:scale-95 shadow-2xl shadow-[#acc7ff]/20"
-      >
-        JUGAR
-      </button>
+      <div class="flex flex-col items-center gap-4">
+        <app-game-btn (action)="startGame()">JUGAR</app-game-btn>
+        <app-game-btn [navigateHome]="true">VOLVER</app-game-btn>
+      </div>
     </div>
   }
 

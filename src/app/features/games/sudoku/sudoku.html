@@ -1,10 +1,10 @@
 <div class="pt-16">
   @if (screen() === 'menu') {
     <div class="fixed inset-0 z-50 flex items-center justify-center bg-[#10131a]/80 backdrop-blur-sm">
-      <button (click)="goToDifficulty()"
-        class="bg-[#acc7ff] hover:brightness-110 text-[#002f68] px-16 py-5 rounded-[1.25rem] text-2xl font-bold uppercase tracking-widest transition-all active:scale-95 shadow-2xl shadow-[#acc7ff]/20">
-        JUGAR
-      </button>
+      <div class="flex flex-col items-center gap-4">
+        <app-game-btn (action)="goToDifficulty()">JUGAR</app-game-btn>
+        <app-game-btn [navigateHome]="true">VOLVER</app-game-btn>
+      </div>
     </div>
   }
 
@@ -49,10 +49,7 @@
             </div>
           </div>
         </div>
-        <button (click)="goHome()"
-          class="bg-[#acc7ff] hover:brightness-110 text-[#002f68] px-10 py-4 rounded-[1.25rem] text-lg font-bold uppercase tracking-widest transition-all active:scale-95">
-          MENÚ
-        </button>
+        <app-game-btn size="sm" (action)="goHome()">MENÚ</app-game-btn>
       </div>
     </div>
   }
@@ -62,10 +59,7 @@
       <div class="flex flex-col items-center gap-6">
         <h2 class="text-3xl font-bold text-red-400 mb-2">GAME OVER</h2>
         <p class="text-[#c1c6d6] text-lg">Dificultad: {{ difficulty().label }}</p>
-        <button (click)="goHome()"
-          class="bg-[#acc7ff] hover:brightness-110 text-[#002f68] px-10 py-4 rounded-[1.25rem] text-lg font-bold uppercase tracking-widest transition-all active:scale-95">
-          MENÚ
-        </button>
+        <app-game-btn size="sm" (action)="goHome()">MENÚ</app-game-btn>
       </div>
     </div>
   }

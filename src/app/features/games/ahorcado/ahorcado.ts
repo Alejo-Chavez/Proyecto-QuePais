@@ -2,6 +2,7 @@ import { Component, signal, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Sound } from '../../../core/services/sounds.service';
 import { ResultadosService } from '../../../core/services/resultados.service';
+import { GameActionBtn } from '../../../shared/components/game-action-btn/game-action-btn';
 
 /*
   ── Tabla game_results (crear en Supabase SQL Editor) ──
@@ -17,7 +18,7 @@ import { ResultadosService } from '../../../core/services/resultados.service';
 
 @Component({
   selector: 'ahorcado',
-  imports: [CommonModule],
+  imports: [CommonModule, GameActionBtn],
   templateUrl: './ahorcado.html',
 })
 

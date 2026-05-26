@@ -11,10 +11,7 @@
             <span class="text-sm text-[#8b909f] uppercase tracking-wider">Puntaje Final</span>
             <p class="text-4xl font-bold text-[#acc7ff] mt-1">{{ score() }}</p>
           </div>
-          <button (click)="startGame()"
-            class="bg-[#acc7ff] hover:brightness-110 text-[#002f68] px-16 py-5 rounded-[1.25rem] text-2xl font-bold uppercase tracking-widest transition-all active:scale-95 shadow-2xl shadow-[#acc7ff]/20">
-            JUGAR DE NUEVO
-          </button>
+          <app-game-btn (action)="startGame()">JUGAR DE NUEVO</app-game-btn>
         </div>
       } @else if (score() > 0) {
         <div class="flex flex-col items-center gap-6">
@@ -23,16 +20,13 @@
             <p class="text-[#c1c6d6] text-lg">Puntaje: {{ score() }}</p>
             <p class="text-[#8b909f] text-sm mt-1">Mejor: {{ bestScore() }}</p>
           </div>
-          <button (click)="startGame()"
-            class="bg-[#acc7ff] hover:brightness-110 text-[#002f68] px-16 py-5 rounded-[1.25rem] text-2xl font-bold uppercase tracking-widest transition-all active:scale-95 shadow-2xl shadow-[#acc7ff]/20">
-            JUGAR
-          </button>
+          <app-game-btn (action)="startGame()">JUGAR</app-game-btn>
         </div>
       } @else {
-        <button (click)="startGame()"
-          class="bg-[#acc7ff] hover:brightness-110 text-[#002f68] px-16 py-5 rounded-[1.25rem] text-2xl font-bold uppercase tracking-widest transition-all active:scale-95 shadow-2xl shadow-[#acc7ff]/20">
-          JUGAR
-        </button>
+        <div class="flex flex-col items-center gap-4">
+          <app-game-btn (action)="startGame()">JUGAR</app-game-btn>
+          <app-game-btn [navigateHome]="true">VOLVER</app-game-btn>
+        </div>
       }
     </div>
   }

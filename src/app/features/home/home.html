@@ -3,13 +3,13 @@
     <div class="absolute inset-0 bg-gray-800/35"></div>
     <a routerLink="/resultados"
        class="relative z-10 flex items-center justify-center w-full py-2 bg-gradient-to-r from-[#acc7ff]/10 via-[#acc7ff]/20 to-[#acc7ff]/10 backdrop-blur-xl border-b border-[#acc7ff]/30 transition-all duration-500 hover:border-[#acc7ff] hover:shadow-[0_0_25px_rgba(172,199,255,0.25)] active:scale-[0.99] overflow-hidden cursor-pointer">
-      <span class="text-sm font-bold tracking-[0.4em] text-[#acc7ff] uppercase hover:text-white transition-colors">
+      <span class="text-sm font-bold tracking-[0.4em] text-[#acc7ff] uppercase hover:text-white transition-colors p-1.5">
         RANKING
       </span>
     </a>
-    <section class="flex-grow grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-full pt-8">
+    <section class="flex-grow grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-full">
         @for (game of games; track game.title) {
-        <a class="group relative overflow-hidden h-auto lg:min-h-[calc(100dvh-9rem)] bg-[#1d2027]/40 backdrop-blur cursor-pointer"
+        <a class="pt-4 group relative overflow-hidden h-auto lg:min-h-[calc(100dvh-9rem)] bg-[#1d2027]/40 backdrop-blur cursor-pointer"
             (click)="goToGame(game.route)" (mouseenter)="playHover()" (click)="playSelect()">
 
             <!-- DESKTOP: img de bg -->

@@ -2,6 +2,7 @@ import { Component, signal, inject } from '@angular/core';
 import { Card } from './models/cards.model';
 import { Sound } from '../../../core/services/sounds.service';
 import { ResultadosService } from '../../../core/services/resultados.service';
+import { GameActionBtn } from '../../../shared/components/game-action-btn/game-action-btn';
 
 /*
   ── Tabla game_results (crear en Supabase SQL Editor) ──
@@ -17,7 +18,7 @@ import { ResultadosService } from '../../../core/services/resultados.service';
 
 @Component({
   selector: 'app-mayor-o-menor',
-  imports: [],
+  imports: [GameActionBtn],
   templateUrl: './mayor-o-menor.html',
 })
 
