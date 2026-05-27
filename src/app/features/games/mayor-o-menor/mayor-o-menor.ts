@@ -102,8 +102,8 @@ export class MayorOMenor {
     this.sound.playSfx('taking-card');
 
     const isCorrect =
-      (option === 'mayor' && current.value > next.value) ||
-      (option === 'menor' && current.value < next.value) ||
+      (option === 'mayor' && next.value > current.value) ||
+      (option === 'menor' && next.value < current.value) ||
       (option === 'igual' && current.value === next.value);
 
     if (isCorrect) {
@@ -140,8 +140,8 @@ export class MayorOMenor {
       this.evaluating.set(false);
     }, 700);
   }
-  
+
   ngOnDestroy() {
-  this.sound.stopMusic();
-}
+    this.sound.stopMusic();
+  }
 }
